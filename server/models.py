@@ -9,7 +9,7 @@ from config import db, bcrypt
 class Meditation(db.Model, SerializerMixin):
     __tablename__ = "meditations"
 
-    meditation_types = ('Visualization', 'Body Scan', 'Lovingkindness', 'Mantra', 'Vipassana') # should go in app.py
+    meditation_types = ('Visualization', 'Body Scan', 'Lovingkindness', 'Mantra', 'Vipassana')
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
