@@ -22,6 +22,14 @@ class Meditations(Resource):
             for meditation in Meditation.query.all()
         ]
         return meditations, 200
+
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+            return user.to_dict(), 200
+        return {'error': 'Unauthorized'}, 401
     
 class Login(Resource):
     def post(self):
@@ -39,6 +47,7 @@ class Login(Resource):
 
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
+api.add_resource(CheckSession, '/check_session')
 
 
 
