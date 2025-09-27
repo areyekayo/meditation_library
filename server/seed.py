@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from config import db, app
-from models import Meditation
+from models import Meditation, User
 
 if __name__ == '__main__':
     fake = Faker()
@@ -17,6 +17,7 @@ if __name__ == '__main__':
         # Seed code goes here!
         print("Deleting data...")
         Meditation.query.delete()
+        User.query.delete()
 
         print("Creating meditations...")
         metta = Meditation(title="Lovingkindness", duration=15, instructions=fake.sentence(), type="Lovingkindness")
@@ -31,9 +32,21 @@ if __name__ == '__main__':
 
         meditations = [metta, insight, body_scan, visualization, mantra]
 
+        print("Creating users...")
+        riko = User(username="riko")
+        sam = User(username="sam")
+        alex = User(username="alex")
+        steph = User(username="steph")
+        
+        riko.password_hash = riko.username + 'password'
+        sam.password_hash = sam.username + 'password'
+        alex.password_hash = alex.username + 'password'
+        steph.password_hash = steph.username + 'password'
+        users = [riko, sam, alex, steph]
 
 
         db.session.add_all(meditations)
+        db.session.add_all(users)
         db.session.commit()
         print("Seeding done!")
 
