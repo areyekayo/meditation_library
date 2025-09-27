@@ -9,14 +9,22 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 from models import Meditation
-# Add your model imports
 
-
-# Views go here!
 
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
+
+class Meditations(Resource):
+    def get(self):
+        meditations = [
+            meditation.to_dict(only=('id', 'title', 'duration', 'type', 'instructions'))
+            for meditation in Meditation.query.all()
+        ]
+        return meditations, 200
+
+api.add_resource(Meditations, '/meditations')
+
 
 
 if __name__ == '__main__':

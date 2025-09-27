@@ -1,8 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
+import NavBar from './NavBar'
 
 function App() {
-  return <h1>Project Client</h1>;
+    const [meditations, setMeditations] = useState([])
+    useEffect(() => {
+        fetch("/meditations")
+        .then((r) => r.json())
+        .then(setMeditations);
+    }, [])
+
+    return (
+        <div>
+          <header>
+          <h1>Meditation Library</h1>
+          <NavBar />
+          </header>
+          <Outlet context={{meditations: meditations}} />
+        </div>
+    )
 }
 
 export default App;

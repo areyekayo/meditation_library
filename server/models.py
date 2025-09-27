@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates
 
 from config import db
 
-class Meditation(db.Model):
+class Meditation(db.Model, SerializerMixin):
     __tablename__ = "meditations"
 
     meditation_types = ('Visualization', 'Body Scan', 'Lovingkindness', 'Mantra', 'Vipassana') # should go in app.py
