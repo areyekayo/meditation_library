@@ -47,19 +47,22 @@ class Login(Resource):
 class SignUp(Resource):
     def post(self):
         data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        if User.query.filter_by(username=username).first():
+            return {'errors': {'username': ['Username already taken']}}, 422
+        
         try:
             user = User(username=data.get('username'))
-            user.password_hash = data.get('password')
+            user.password_hash = password
             db.session.add(user)
             db.session.commit()
             session['user_id'] = user.id
             return user.to_dict(), 201
         except Exception as e:
             db.session.rollback()
-            errors_dict = {}
-            message = str(e)
-            errors_dict['error'] = [message]
-            return {'errors': errors_dict}, 422
+            return {'errors': {'error': [str(e)]}}, 422
     
 class Users(Resource):
     def get(self):

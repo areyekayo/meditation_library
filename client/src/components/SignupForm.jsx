@@ -27,6 +27,10 @@ function SignupForm() {
                     res.json().then(newUser => {
                         onSignup(prev => [...prev, newUser]);
                     })
+                } else if (res.status == 422) {
+                    res.json().then(errorData => {
+                        formik.setFieldError("username", errorData.errors.username[0])
+                    });
                 }
             });
         },
