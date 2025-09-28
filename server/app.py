@@ -44,10 +44,28 @@ class Login(Resource):
         except Exception:
             return {'error': 'Unauthorized'}, 401
         
+class SignUp(Resource):
+    def post(self):
+        data = request.get_json()
+        try:
+            user = User(username=data.get('username'))
+            user.password_hash = data.get('password')
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            return user.to_dict(), 201
+        except Exception as e:
+            db.session.rollback()
+            errors_dict = {}
+            message = str(e)
+            errors_dict['error'] = [message]
+            return {'errors': errors_dict}, 422
+        
 
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
+api.add_resource(SignUp, '/signup')
 
 
 
