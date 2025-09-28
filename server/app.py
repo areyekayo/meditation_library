@@ -60,12 +60,20 @@ class SignUp(Resource):
             message = str(e)
             errors_dict['error'] = [message]
             return {'errors': errors_dict}, 422
+    
+class Users(Resource):
+    def get(self):
+        users = [
+            user.to_dict(only=('id', 'username')) for user in User.query.all()
+        ]
+        return users, 200
         
 
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
+api.add_resource(Users, '/users')
 
 
 
