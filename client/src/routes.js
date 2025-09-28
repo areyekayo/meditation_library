@@ -1,6 +1,7 @@
 import App from "./components/App";
 import MeditationCollection from "./components/MeditationCollection";
-import SignupForm from "./components/SignupForm";
+import SignupForm from "./components/SignupForm"; 
+
 
 const routes = [
     {

@@ -1,18 +1,10 @@
-import {useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useOutletContext } from "react-router-dom";
 
 function SignupForm() {
-    const [refreshPage, setRefreshPage] = useState(false);
-
-    // useEffect(() => {
-    //     fetch("/users")
-    //     .then((r) => r.json())
-    //     .then((data) => {
-    //         setUsers(data);
-
-    //     });
-    // }, [refreshPage]);
+    const {onSignup} = useOutletContext()
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username"),
@@ -26,15 +18,15 @@ function SignupForm() {
         },
         validationSchema: formSchema,
         onSubmit: (values) => {
-            fetch("/users", {
+            fetch("/signup", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values, null, 2),
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(values),
             }).then((res) => {
-                if (res.status == 200) {
-                    setRefreshPage(!refreshPage);
+                if (res.status == 201) {
+                    res.json().then(newUser => {
+                        onSignup(prev => [...prev, newUser]);
+                    })
                 }
             });
         },
@@ -56,10 +48,12 @@ function SignupForm() {
                 <input 
                     id="password"
                     name="password"
+                    type="password"
                     onChange={formik.handleChange}
                     value={formik.values.password}    
                 />
                 <p style={{color: "red"}}> {formik.errors.password}</p>
+                <button type="submit">Submit</button>
             </form>
         </div>
     )
