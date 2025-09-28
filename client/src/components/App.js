@@ -5,6 +5,7 @@ import NavBar from './NavBar'
 function App() {
     const [meditations, setMeditations] = useState([]);
     const [users, setUsers] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         fetch("/meditations")
@@ -24,7 +25,7 @@ function App() {
           <h1>Meditation Library</h1>
           <NavBar />
           </header>
-          <Outlet context={{meditations: meditations, users: users, onSignup: setUsers}} />
+          <Outlet context={{meditations: meditations, users: users, onSignup: setUsers, onLogin: setUser}} />
         </div>
     )
 }

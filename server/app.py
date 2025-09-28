@@ -34,15 +34,18 @@ class CheckSession(Resource):
 class Login(Resource):
     def post(self):
         data = request.get_json()
-        try:
-            username = data['username']
-            user = User.query.filter(User.username == username).first()
-            password = data['password']
-            if user.authenticate(password):
-                session['user_id'] = user.id
-                return user.to_dict(), 200
-        except Exception:
-            return {'error': 'Unauthorized'}, 401
+        username = data.get('username')
+        password = data.get('password')
+
+        user = User.query.filter(User.username == username).first()
+        if not user:
+            return {'errors': {'username': ['Username not found']}}, 401
+        if user.authenticate(password):
+            session['user_id'] = user.id
+            return user.to_dict(), 200
+        else:
+            return {'errors': {'password': ['Invalid password']}}, 401
+
         
 class SignUp(Resource):
     def post(self):
