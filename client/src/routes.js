@@ -1,7 +1,6 @@
 import App from "./components/App";
 import MeditationCollection from "./components/MeditationCollection";
-import SignupForm from "./components/SignupForm"; 
-import Login from "./components/Login";
+import LoginForm from "./components/LoginForm";
 
 
 const routes = [
@@ -15,7 +14,7 @@ const routes = [
             },
             {
                 path: "/login",
-                element: <Login />
+                element: <LoginForm />
             }
         ]
     }

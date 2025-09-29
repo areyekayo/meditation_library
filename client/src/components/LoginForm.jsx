@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useOutletContext } from "react-router-dom";
 
-function Login() {
+function LoginForm() {
   const { onLogin } = useOutletContext();
   const [backendErrors, setBackendErrors] = useState({});
 
@@ -42,7 +42,6 @@ function Login() {
           }
           setErrors(errors);
           setBackendErrors(errors);
-          // Clear password field
           setFieldValue("password", "");
         }
       } catch (error) {
@@ -99,4 +98,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginForm;

@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { useOutletContext } from "react-router-dom";
 
 function SignupForm() {
-    const {onSignup} = useOutletContext()
+    const {onLogin} = useOutletContext()
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username"),
@@ -22,11 +22,11 @@ function SignupForm() {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(values),
             }).then((res) => {
-                if (res.status == 201) {
+                if (res.status === 201) {
                     res.json().then(newUser => {
-                        onSignup(prev => [...prev, newUser]);
+                        onLogin(newUser);
                     })
-                } else if (res.status == 422) {
+                } else if (res.status === 422) {
                     res.json().then(errorData => {
                         formik.setFieldError("username", errorData.errors.username[0])
                     });
