@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import NavBar from './NavBar'
 
-
 function App() {
     const [meditations, setMeditations] = useState([]);
     const [user, setUser] = useState(null);

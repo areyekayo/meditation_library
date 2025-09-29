@@ -22,6 +22,15 @@ class Meditations(Resource):
             for meditation in Meditation.query.all()
         ]
         return meditations, 200
+    
+class MeditationById(Resource):
+    def get(self, id):
+        meditation = Meditation.query.filter(Meditation.id == id).first()
+        if meditation:
+            meditation_dict = meditation.to_dict(only=('id', 'title', 'type', 'duration', 'instructions'))
+            return meditation_dict, 200
+        else:
+            return {'error': 'Meditation not found'}, 404
 
 class CheckSession(Resource):
     def get(self):
@@ -80,6 +89,7 @@ api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
 api.add_resource(Users, '/users')
+api.add_resource(MeditationById, '/meditations/<int:id>')
 
 
 
