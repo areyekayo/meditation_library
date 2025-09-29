@@ -56,7 +56,7 @@ function SignupForm() {
                     value={formik.values.password}    
                 />
                 <p style={{color: "red"}}> {formik.errors.password}</p>
-                <button type="submit">Submit</button>
+                <button type="submit">Sign Up</button>
             </form>
         </div>
     )

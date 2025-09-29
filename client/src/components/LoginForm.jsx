@@ -72,6 +72,7 @@ function LoginForm() {
           onBlur={formik.handleBlur}
           value={formik.values.username}
         />
+        <br />
         {getError("username") && <p style={{ color: "red" }}>{getError("username")}</p>}
         <br />
         <label htmlFor="password">Password</label>
@@ -91,7 +92,7 @@ function LoginForm() {
 
         <br />
         <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
-          Submit
+          Login
         </button>
       </form>
     </div>
