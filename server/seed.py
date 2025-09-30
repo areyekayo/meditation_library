@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from config import db, app
-from models import Meditation, User
+from models import Meditation, User, MeditationSession
 
 if __name__ == '__main__':
     fake = Faker()
@@ -18,6 +18,7 @@ if __name__ == '__main__':
         print("Deleting data...")
         Meditation.query.delete()
         User.query.delete()
+        MeditationSession.query.delete()
 
         print("Creating meditations...")
         metta = Meditation(title="Lovingkindness", duration=15, instructions=fake.sentence(), type="Lovingkindness")
@@ -44,9 +45,32 @@ if __name__ == '__main__':
         steph.password_hash = steph.username + 'password'
         users = [riko, sam, alex, steph]
 
+        print("Creating meditation sessions...")
+        session1 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation_id=metta.id, user_id=riko.id)
+
+        session2 = MeditationSession(completed_duration=10, rating=3, session_note=fake.sentence(), meditation_id=visualization.id, user_id=riko.id)
+
+        session3 = MeditationSession(completed_duration=10, rating=4, session_note=fake.sentence(), meditation_id=insight.id, user_id=riko.id)
+
+        session4 = MeditationSession(completed_duration=15, rating=3, session_note=fake.sentence(), meditation_id=insight.id, user_id=riko.id)
+
+        session5 = MeditationSession(completed_duration=15, rating=4, session_note=fake.sentence(), meditation_id=metta.id, user_id=sam.id)
+
+        session6 = MeditationSession(completed_duration=3, rating=1, session_note=fake.sentence(), meditation_id=insight.id, user_id=steph.id)
+
+        session7 = MeditationSession(completed_duration=5, rating=2, session_note=fake.sentence(), meditation_id=body_scan.id, user_id=steph.id)
+
+        session8 = MeditationSession(completed_duration=6, rating=3, session_note=fake.sentence(), meditation_id=mantra.id, user_id=sam.id)
+
+        session9 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation_id=visualization.id, user_id=alex.id)
+
+        session10 = MeditationSession(completed_duration=5, rating=3, session_note=fake.sentence(), meditation_id=metta.id, user_id=alex.id)
+
+        meditation_sessions = [session1, session2, session3, session4, session5, session6, session7, session8, session9, session10]
 
         db.session.add_all(meditations)
         db.session.add_all(users)
+        db.session.add_all(meditation_sessions)
         db.session.commit()
         print("Seeding done!")
 
