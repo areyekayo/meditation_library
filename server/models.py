@@ -76,7 +76,7 @@ class MeditationSession(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     completed_duration = db.Column(db.Integer)
     rating = db.Column(db.Integer)
-    session_note = db.Column(db.String)
+    session_note = db.Column(db.String, nullable=True)
     session_timestamp = db.Column(db.DateTime, server_default=db.func.now())
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
