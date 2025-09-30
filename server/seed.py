@@ -46,25 +46,25 @@ if __name__ == '__main__':
         users = [riko, sam, alex, steph]
 
         print("Creating meditation sessions...")
-        session1 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation_id=metta.id, user_id=riko.id)
+        session1 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation=metta, user=riko)
 
-        session2 = MeditationSession(completed_duration=10, rating=3, session_note=fake.sentence(), meditation_id=visualization.id, user_id=riko.id)
+        session2 = MeditationSession(completed_duration=10, rating=3, session_note=fake.sentence(), meditation=visualization, user=riko)
 
-        session3 = MeditationSession(completed_duration=10, rating=4, session_note=fake.sentence(), meditation_id=insight.id, user_id=riko.id)
+        session3 = MeditationSession(completed_duration=10, rating=4, session_note=fake.sentence(), meditation=insight, user=riko)
 
-        session4 = MeditationSession(completed_duration=15, rating=3, session_note=fake.sentence(), meditation_id=insight.id, user_id=riko.id)
+        session4 = MeditationSession(completed_duration=15, rating=3, session_note=fake.sentence(), meditation=insight, user=riko)
 
-        session5 = MeditationSession(completed_duration=15, rating=4, session_note=fake.sentence(), meditation_id=metta.id, user_id=sam.id)
+        session5 = MeditationSession(completed_duration=15, rating=4, session_note=fake.sentence(), meditation=metta, user=sam)
 
-        session6 = MeditationSession(completed_duration=3, rating=1, session_note=fake.sentence(), meditation_id=insight.id, user_id=steph.id)
+        session6 = MeditationSession(completed_duration=3, rating=1, session_note=fake.sentence(), meditation=insight, user=steph)
 
-        session7 = MeditationSession(completed_duration=5, rating=2, session_note=fake.sentence(), meditation_id=body_scan.id, user_id=steph.id)
+        session7 = MeditationSession(completed_duration=5, rating=2, session_note=fake.sentence(), meditation=body_scan, user=steph)
 
-        session8 = MeditationSession(completed_duration=6, rating=3, session_note=fake.sentence(), meditation_id=mantra.id, user_id=sam.id)
+        session8 = MeditationSession(completed_duration=6, rating=3, session_note=fake.sentence(), meditation=mantra, user=sam)
 
-        session9 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation_id=visualization.id, user_id=alex.id)
+        session9 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation=visualization, user=alex)
 
-        session10 = MeditationSession(completed_duration=5, rating=3, session_note=fake.sentence(), meditation_id=metta.id, user_id=alex.id)
+        session10 = MeditationSession(completed_duration=5, rating=3, session_note=fake.sentence(), meditation=metta, user=alex)
 
         meditation_sessions = [session1, session2, session3, session4, session5, session6, session7, session8, session9, session10]
 
