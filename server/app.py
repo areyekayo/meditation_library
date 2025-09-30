@@ -8,7 +8,7 @@ from flask_restful import Resource
 
 # Local imports
 from config import app, db, api
-from models import Meditation, User
+from models import Meditation, User, MeditationSession
 
 
 @app.route('/')
@@ -82,6 +82,35 @@ class Users(Resource):
             user.to_dict(only=('id', 'username')) for user in User.query.all()
         ]
         return users, 200
+    
+class MeditationSessions(Resource):
+    def get(self):
+        meditation_sessions = [
+            session.to_dict(only=('id', 'completed_duration', 'rating', 'session_note', 'user', 'meditation'))
+            for session in MeditationSession.query.all()
+        ]
+        return meditation_sessions, 200
+    
+    def post(self):
+        data = request.json()
+        try:
+            meditation_session = MeditationSession(
+                completed_duration=data['completed_duration'],
+                rating=data['rating'],
+                session_note=data['session_note'],
+                user_id=data['user_id'],
+                meditation_id=data['meditation_id']
+            )
+            db.session.add(meditation_session)
+            db.session.commit()
+
+            meditation_session_dict = meditation_session.to_dict(only=(
+                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'user', 'meditation_id', 'meditation'
+            ))
+            return meditation_session_dict, 201
+        except Exception:
+            db.session.rollback()
+            return {"errors": ["validation errors"]}, 400
         
 
 api.add_resource(Meditations, '/meditations')
@@ -90,6 +119,7 @@ api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
 api.add_resource(Users, '/users')
 api.add_resource(MeditationById, '/meditations/<int:id>')
+api.add_resource(MeditationSessions, '/meditation_sessions')
 
 
 
