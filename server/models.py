@@ -87,4 +87,17 @@ class MeditationSession(db.Model, SerializerMixin):
 
     serialize_rules = ('-meditation.meditation_sessions', '-user.meditation_sessions')
 
+    @validates('rating')
+    def validate_rating(self, key, rating):
+        if not (1 <= rating <= 5):
+            raise ValueError("Rating must be a number between 1-5")
+        return rating
+    
+    @validates('completed_duration')
+    def validate_completed_duration(self, key, duration):
+        if not 0 < duration:
+            raise ValueError ("Duration must be greater than 0")
+        return duration
+        
+
 
