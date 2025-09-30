@@ -17,6 +17,13 @@ class Meditation(db.Model, SerializerMixin):
     instructions = db.Column(db.String)
     type = db.Column(Enum(*meditation_types, name='meditation_type_enum'), nullable=False)
 
+    meditation_sessions = db.relationship('MeditationSession', back_populates='meditation', cascade='all, delete-orphan')
+
+    users = association_proxy('meditation_sessions', 'user', creator=lambda user_obj: MeditationSession(user=user_obj))
+
+    serialize_rules = ('-users.meditations', '-meditation_sessions.meditation',)
+
+
     @validates('title')
     def validate_title(self, key, title):
         if not (5 <= len(title) <= 100):
@@ -42,6 +49,12 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String)
 
+    meditation_sessions = db.relationship('MeditationSession', back_populates='user', cascade='all, delete-orphan')
+
+    meditations = association_proxy('meditation_sessions', 'meditation', creator=lambda meditation_obj: MeditationSession(meditation=meditation_obj))
+
+    serialize_rules = ('-meditations.users', '-meditation_sessions.user')
+
     @hybrid_property
     def password_hash(self):
         raise Exception('Password hashes may not be viewed')
@@ -56,3 +69,21 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8')
         )
+    
+class MeditationSession(db.Model, SerializerMixin):
+    __tablename__ = "meditation_sessions"
+
+    id = db.Column(db.Integer, primary_key=True)
+    completed_duration = db.Column(db.Integer)
+    rating = db.Column(db.Integer)
+    session_note = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    meditation_id = db.Column(db.Integer, db.ForeignKey('meditations.id'))
+
+    user = db.relationship('User', back_populates='meditation_sessions')
+    meditation = db.relationship('Meditation', back_populates='meditation_sessions')
+
+    serialize_rules = ('-meditation.meditation_sessions', '-user.meditation_sessions')
+
+
