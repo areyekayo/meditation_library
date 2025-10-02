@@ -1,6 +1,7 @@
 import App from "./components/App";
 import MeditationCollection from "./components/MeditationCollection";
 import Login from "./pages/Login";
+import Meditate from "./pages/Meditate";
 
 
 const routes = [
@@ -15,6 +16,10 @@ const routes = [
             {
                 path: "/login",
                 element: <Login />
+            },
+            {
+                path: "/meditation_sessions",
+                element: <Meditate />
             }
         ]
     }

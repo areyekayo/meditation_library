@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import NavBar from './NavBar'
 
 function App() {
     const [meditations, setMeditations] = useState([]);
     const [user, setUser] = useState(null);
+    const [meditationSessions, setMeditationSessions] = useState([]);
 
     useEffect(() => {
         fetch("/meditations")
@@ -15,12 +16,22 @@ function App() {
     useEffect(() => {
       fetch("/check_session").then((r) => {
         if (r.ok){
-          r.json().then((user) => setUser(user))
+          r.json().then((user) => {
+            setUser(user);
+            setMeditationSessions(user.meditation_sessions)})
         }
       });
     }, [])
 
-    if (!user) return <Navigate to='/login' />
+    const onMeditation = (newMeditationSession) => {
+      setMeditationSessions(prevSessions => [...prevSessions, newMeditationSession]);
+    }
+
+    const location = useLocation();
+
+    if (!user && location.pathname !== "/login") return <Navigate to='/login' />
+    if (user && (location.pathname === "/login" || location.pathname === "/")) return <Navigate to='/meditation_sessions' />
+
 
     return (
         <div>
@@ -28,7 +39,7 @@ function App() {
           <h1>Meditation Library</h1>
           <NavBar />
           </header>
-          <Outlet context={{meditations: meditations, onLogin: setUser, user: user}} />
+          <Outlet context={{meditations, onLogin: setUser, user, onMeditation, meditationSessions}} />
         </div>
     )
 }

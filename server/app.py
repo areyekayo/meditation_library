@@ -92,25 +92,34 @@ class MeditationSessions(Resource):
         return meditation_sessions, 200
     
     def post(self):
-        data = request.json()
+        data = request.get_json()
+        user_id = session.get('user_id')
+        user = User.query.filter(User.id == user_id).first()
+        if not user: return {'error': 'Unauthorized'}, 401
+
+        meditation_id = data.get('meditation')
+        meditation = Meditation.query.get(meditation_id)
+        if not meditation: return {'error': 'Meditation not found'}, 404
+
+
         try:
             meditation_session = MeditationSession(
                 completed_duration=data['completed_duration'],
                 rating=data['rating'],
                 session_note=data['session_note'],
-                user_id=data['user_id'],
-                meditation_id=data['meditation_id']
+                user=user,
+                meditation=meditation
             )
             db.session.add(meditation_session)
             db.session.commit()
 
             meditation_session_dict = meditation_session.to_dict(only=(
-                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'user', 'meditation_id', 'meditation'
+                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id'
             ))
             return meditation_session_dict, 201
-        except Exception:
+        except Exception as e:
             db.session.rollback()
-            return {"errors": ["validation errors"]}, 400
+            return {"errors": [str(e)]}, 400
         
 
 api.add_resource(Meditations, '/meditations')
