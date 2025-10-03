@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import MeditateForm from "../components/MeditateForm";
 
 function Meditate(){
+    const [showMeditateForm, setShowMeditateForm] = useState(true);
+
     const {meditations, user, onMeditation, meditationSessions} = useOutletContext();
 
     const formSchema = yup.object().shape({
@@ -49,6 +52,7 @@ function Meditate(){
     return (
         <div>
             <form onSubmit={formik.handleSubmit}>
+                <h1>Meditate</h1>
                 <h2>Select a Meditation</h2>
                 <br />
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange}>

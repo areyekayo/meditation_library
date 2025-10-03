@@ -37,7 +37,8 @@ class CheckSession(Resource):
         user_id = session.get('user_id')
         if user_id:
             user = User.query.filter(User.id == user_id).first()
-            return user.to_dict(), 200
+            return user.to_dict(
+                only=('id', 'username', 'meditations')), 200
         return {'error': 'Unauthorized'}, 401
     
 class Login(Resource):
@@ -100,7 +101,6 @@ class MeditationSessions(Resource):
         meditation_id = data.get('meditation')
         meditation = Meditation.query.get(meditation_id)
         if not meditation: return {'error': 'Meditation not found'}, 404
-
 
         try:
             meditation_session = MeditationSession(

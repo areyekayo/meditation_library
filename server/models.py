@@ -21,7 +21,7 @@ class Meditation(db.Model, SerializerMixin):
 
     users = association_proxy('meditation_sessions', 'user', creator=lambda user_obj: MeditationSession(user=user_obj))
 
-    serialize_rules = ('-users.meditations', '-meditation_sessions.meditation',)
+    serialize_rules = ('-users.meditations', '-meditation_sessions.meditation', '-meditation_sessions.user')
 
 
     @validates('title')

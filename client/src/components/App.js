@@ -18,7 +18,7 @@ function App() {
         if (r.ok){
           r.json().then((user) => {
             setUser(user);
-            setMeditationSessions(user.meditation_sessions)})
+            setMeditationSessions(user.meditations)})
         }
       });
     }, [])
