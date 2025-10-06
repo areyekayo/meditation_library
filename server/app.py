@@ -5,6 +5,7 @@
 # Remote library imports
 from flask import request, session
 from flask_restful import Resource
+from datetime import datetime
 
 # Local imports
 from config import app, db, api
@@ -38,7 +39,7 @@ class CheckSession(Resource):
         if user_id:
             user = User.query.filter(User.id == user_id).first()
             return user.to_dict(
-                only=('id', 'username', 'meditations')), 200
+                only=('id', 'username')), 200
         return {'error': 'Unauthorized'}, 401
     
 class Login(Resource):
@@ -77,20 +78,47 @@ class SignUp(Resource):
             db.session.rollback()
             return {'errors': {'error': [str(e)]}}, 422
     
-class Users(Resource):
-    def get(self):
-        users = [
-            user.to_dict(only=('id', 'username')) for user in User.query.all()
-        ]
-        return users, 200
+# class Users(Resource):
+#     def get(self):
+#         users = [
+#             user.to_dict(only=('id', 'username')) for user in User.query.all()
+#         ]
+#         return users, 200
     
 class MeditationSessions(Resource):
     def get(self):
-        meditation_sessions = [
-            session.to_dict(only=('id', 'completed_duration', 'rating', 'session_note', 'user', 'meditation'))
-            for session in MeditationSession.query.all()
-        ]
-        return meditation_sessions, 200
+        user_id = session['user_id']
+        if not user_id:
+            return {'error': 'Unauthorized'}, 401
+        
+        user = User.query.get(user_id)
+        if not user:
+            return {'error': 'User not found'}, 404
+        
+        meditation_map = {}
+
+        for med in user.meditation_sessions:
+            meditation = med.meditation
+            if meditation.id not in meditation_map:
+                meditation_map[meditation.id] = {
+                    "id": meditation.id,
+                    "title": meditation.title,
+                    "type": meditation.type,
+                    "duration": meditation.duration,
+                    "instructions": meditation.instructions,
+                    "meditation_sessions": []
+                }
+            meditation_map[meditation.id]["meditation_sessions"].append({
+                "id": med.id,
+                "user_id": med.user_id,
+                "session_note": med.session_note,
+                "rating": med.rating,
+                "session_timestamp": med.session_timestamp.isoformat() if med.session_timestamp else None,
+                "completed_duration": med.completed_duration,
+                "meditation_id": med.meditation.id
+            })
+        
+        return list(meditation_map.values()), 200
     
     def post(self):
         data = request.get_json()
@@ -126,7 +154,7 @@ api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
-api.add_resource(Users, '/users')
+# api.add_resource(Users, '/users')
 api.add_resource(MeditationById, '/meditations/<int:id>')
 api.add_resource(MeditationSessions, '/meditation_sessions')
 

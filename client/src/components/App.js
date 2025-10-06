@@ -16,12 +16,22 @@ function App() {
     useEffect(() => {
       fetch("/check_session").then((r) => {
         if (r.ok){
-          r.json().then((user) => {
-            setUser(user);
-            setMeditationSessions(user.meditations)})
+          r.json().then((user) => setUser(user))
         }
       });
     }, [])
+
+    useEffect(() => {
+      if (user) {
+        fetch("/meditation_sessions")
+        .then((res) => {
+          if (res.ok){
+            res.json().then((sessions) => setMeditationSessions(sessions))
+          }
+        })
+      }
+    }, [user])
+
 
     const onMeditation = (newMeditationSession) => {
       setMeditationSessions(prevSessions => [...prevSessions, newMeditationSession]);

@@ -70,6 +70,15 @@ class User(db.Model, SerializerMixin):
             self._password_hash, password.encode('utf-8')
         )
     
+    # def serialize_with_unique_meditations(self):
+    #     unique_meditations = {meditation.id: meditation for meditation in self.meditations}.values()
+    #     return {
+    #         'id': self.id,
+    #         'username': self.username,
+    #         'meditations': [m.to_dict(only=('id', 'title', 'duration', 'type', 'instructions')) for m in unique_meditations]
+    #     }
+    
+    
 class MeditationSession(db.Model, SerializerMixin):
     __tablename__ = "meditation_sessions"
 
