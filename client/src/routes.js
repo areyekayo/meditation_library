@@ -2,6 +2,8 @@ import App from "./components/App";
 import MeditationCollection from "./components/MeditationCollection";
 import Login from "./pages/Login";
 import Meditate from "./pages/Meditate";
+import UserMeditationSessionCard from "./components/UserMeditationSessionCard";
+import MeditationCard from "./components/MeditationCard";
 
 
 const routes = [
@@ -11,7 +13,13 @@ const routes = [
         children: [
             {
                 path: "/meditations",
-                element: <MeditationCollection />
+                element: <MeditationCollection />,
+                children: [
+                    {
+                        path: "/meditations/:id",
+                        element: <MeditationCard />
+                    }
+                ]
             },
             {
                 path: "/login",

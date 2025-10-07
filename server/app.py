@@ -27,11 +27,21 @@ class Meditations(Resource):
 class MeditationById(Resource):
     def get(self, id):
         meditation = Meditation.query.filter(Meditation.id == id).first()
-        if meditation:
-            meditation_dict = meditation.to_dict(only=('id', 'title', 'type', 'duration', 'instructions'))
-            return meditation_dict, 200
-        else:
+        if not meditation:
             return {'error': 'Meditation not found'}, 404
+
+        meditation_dict = meditation.to_dict(only=('id', 'title', 'type', 'duration', 'instructions'))
+        user_id = session.get('user_id')
+
+        # If user is logged in, return their meditation sessions for each meditation
+        if user_id:
+            user_meditations = [
+                s.to_dict(only=('id', 'completed_duration', 'rating', 'session_note', 'session_timestamp')) for s in meditation.meditation_sessions if s.user_id == user_id
+            ]
+            meditation_dict['meditation_sessions'] = user_meditations
+
+        return meditation_dict, 200
+    
 
 class CheckSession(Resource):
     def get(self):
@@ -57,7 +67,6 @@ class Login(Resource):
         else:
             return {'errors': {'password': ['Invalid password']}}, 401
 
-        
 class SignUp(Resource):
     def post(self):
         data = request.get_json()
@@ -78,12 +87,14 @@ class SignUp(Resource):
             db.session.rollback()
             return {'errors': {'error': [str(e)]}}, 422
     
-# class Users(Resource):
+# class UserById(Resource):
 #     def get(self):
-#         users = [
-#             user.to_dict(only=('id', 'username')) for user in User.query.all()
-#         ]
-#         return users, 200
+#         user_id = session.get('user_id')
+#         if user_id:
+#             user = User.query.filter(User.id == user_id).first()
+#             return user.to_dict(only=('id', 'meditation_sessions')), 200
+        
+       
     
 class MeditationSessions(Resource):
     def get(self):
@@ -95,30 +106,39 @@ class MeditationSessions(Resource):
         if not user:
             return {'error': 'User not found'}, 404
         
-        meditation_map = {}
+        meditation_sessions = [
+            meditation_session.to_dict(only=(
+                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id', 'meditation'
+            )) for meditation_session in user.meditation_sessions
+        ]
 
-        for med in user.meditation_sessions:
-            meditation = med.meditation
-            if meditation.id not in meditation_map:
-                meditation_map[meditation.id] = {
-                    "id": meditation.id,
-                    "title": meditation.title,
-                    "type": meditation.type,
-                    "duration": meditation.duration,
-                    "instructions": meditation.instructions,
-                    "meditation_sessions": []
-                }
-            meditation_map[meditation.id]["meditation_sessions"].append({
-                "id": med.id,
-                "user_id": med.user_id,
-                "session_note": med.session_note,
-                "rating": med.rating,
-                "session_timestamp": med.session_timestamp.isoformat() if med.session_timestamp else None,
-                "completed_duration": med.completed_duration,
-                "meditation_id": med.meditation.id
-            })
+        return meditation_sessions, 200
+            
+        # meditation_map = {}
+
+
+        # for med in user.meditation_sessions:
+        #     meditation = med.meditation
+        #     if meditation.id not in meditation_map:
+        #         meditation_map[meditation.id] = {
+        #             "id": meditation.id,
+        #             "title": meditation.title,
+        #             "type": meditation.type,
+        #             "duration": meditation.duration,
+        #             "instructions": meditation.instructions,
+        #             "meditation_sessions": []
+        #         }
+        #     meditation_map[meditation.id]["meditation_sessions"].append({
+        #         "id": med.id,
+        #         "user_id": med.user_id,
+        #         "session_note": med.session_note,
+        #         "rating": med.rating,
+        #         "session_timestamp": med.session_timestamp.isoformat() if med.session_timestamp else None,
+        #         "completed_duration": med.completed_duration,
+        #         "meditation_id": med.meditation.id
+        #     })
         
-        return list(meditation_map.values()), 200
+        # return list(meditation_map.values()), 200
     
     def post(self):
         data = request.get_json()
@@ -142,7 +162,7 @@ class MeditationSessions(Resource):
             db.session.commit()
 
             meditation_session_dict = meditation_session.to_dict(only=(
-                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id'
+                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id', 'meditation', 'user'
             ))
             return meditation_session_dict, 201
         except Exception as e:

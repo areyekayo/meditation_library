@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import MeditationCard from "./MeditationCard";
 
 function MeditationCollection() {
@@ -8,13 +8,7 @@ function MeditationCollection() {
     return(
         <div>
             {meditations.map(meditation => (
-                <MeditationCard
-                    key={meditation.id}
-                    title={meditation.title}
-                    type={meditation.type}
-                    duration={meditation.duration}
-                    instructions={meditation.instructions}
-                />
+                <Link to={`/meditations/${meditation.id}`}>{meditation.title}</Link>
             ))}
         </div>
     )
