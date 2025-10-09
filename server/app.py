@@ -170,6 +170,8 @@ class MeditationSessions(Resource):
             return {"errors": [str(e)]}, 400
         
 
+        
+
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')

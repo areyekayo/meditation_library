@@ -6,6 +6,7 @@ function App() {
     const [meditations, setMeditations] = useState([]);
     const [user, setUser] = useState(null);
     const [meditationSessions, setMeditationSessions] = useState([]);
+    const [userMeditations, setUserMeditations] = useState([]);
 
     useEffect(() => {
         fetch("/meditations")
@@ -21,12 +22,24 @@ function App() {
       });
     }, [])
 
+    const userMeditationList = meditationSessions.reduce((acc, session) => {
+      if (!acc.find(med => med.id === session.meditation.id)) {
+        acc.push(session.meditation);
+      }
+      return acc
+    }, [])
+
     useEffect(() => {
       if (user) {
         fetch("/meditation_sessions")
         .then((res) => {
           if (res.ok){
-            res.json().then((sessions) => setMeditationSessions(sessions))
+            res.json().then((sessions) => {
+              setMeditationSessions(sessions);
+              setUserMeditations(userMeditationList);
+              console.log(userMeditationList)
+          }
+        )
           }
         })
       }
@@ -40,7 +53,7 @@ function App() {
     const location = useLocation();
 
     if (!user && location.pathname !== "/login") return <Navigate to='/login' />
-    if (user && (location.pathname === "/login" || location.pathname === "/")) return <Navigate to='/meditation_sessions' />
+    if (user && (location.pathname === "/login" || location.pathname === "/")) return <Navigate to='/meditate' />
 
 
     return (
@@ -49,7 +62,7 @@ function App() {
           <h1>Meditation Library</h1>
           <NavBar />
           </header>
-          <Outlet context={{meditations, onLogin: setUser, user, onMeditation, meditationSessions}} />
+          <Outlet context={{meditations, onLogin: setUser, user, onMeditation, meditationSessions, userMeditations}} />
         </div>
     )
 }

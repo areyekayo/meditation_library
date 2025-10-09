@@ -1,19 +1,27 @@
-import { useOutletContext, Link } from "react-router-dom"
+import { useOutletContext, Link, useParams } from "react-router-dom"
 
-function MeditationCard({id, title, type, duration, instructions}){
-    const {meditationSessions, user} = useOutletContext()
+function MeditationCard(){
+    const {meditations, meditationSessions, user} = useOutletContext()
+    const {id} = useParams();
+    const medId = parseInt(id, 10);
+    
+    const meditation = meditations.find((m) => m.id == medId)
 
-    const userSessions = meditationSessions.filter((session) => session.meditation_id == id)
+    const userSessions = meditationSessions ? meditationSessions.filter((session) => session.meditation_id == id) : [];
 
     return (
         <div>
-            <h2>{title}</h2>
-            <p>Type: {type}</p>
-            <p>{duration} minutes</p>
-            <p>{instructions}</p>
-            {meditationSessions ? (
+            <h2>{meditation.title}</h2>
+            <p>Type: {meditation.type}</p>
+            <p>{meditation.duration} minutes</p>
+            <p>{meditation.instructions}</p>
+
+            <h3>Your sessions with this meditation</h3>
+            {userSessions.length > 0 ? (
                 userSessions.map((session) => (
-                    <Link to={`/meditation_sessions/${session.id}`}>{session.session_timestamp}</Link>
+                    <div>
+                         <Link key={session.id} to={`/meditation_sessions/${session.id}`}>{session.session_timestamp}</Link>
+                    </div>
                 ))
             ) : (
                 <p>No sessions logged</p>
@@ -23,4 +31,4 @@ function MeditationCard({id, title, type, duration, instructions}){
     )
 }
 
-export default MeditationCard
+export default MeditationCard;

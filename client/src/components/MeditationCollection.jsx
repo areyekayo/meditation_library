@@ -8,7 +8,11 @@ function MeditationCollection() {
     return(
         <div>
             {meditations.map(meditation => (
-                <Link to={`/meditations/${meditation.id}`}>{meditation.title}</Link>
+                <>
+                    <br />
+                        <Link to={`/meditations/${meditation.id}`} key={meditation.id}>{meditation.title}</Link>
+                    <br />
+                </>
             ))}
         </div>
     )
