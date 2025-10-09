@@ -2,9 +2,8 @@ import App from "./components/App";
 import MeditationCollection from "./components/MeditationCollection";
 import Login from "./pages/Login";
 import Meditate from "./pages/Meditate";
-import UserMeditationSessionCard from "./components/UserMeditationSessionCard";
 import MeditationCard from "./components/MeditationCard";
-import UserMeditationsList from "./components/UserMeditationsList";
+import UserMeditationSessionCard from "./components/UserMeditationSessionCard";
 
 
 const routes = [
@@ -27,6 +26,10 @@ const routes = [
             {
                 path: "/meditate",
                 element: <Meditate />
+            },
+            {
+                path: "/meditation_sessions/:id",
+                element: <UserMeditationSessionCard />
             }
         ]
     }

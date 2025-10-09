@@ -51,8 +51,8 @@ function MeditateForm(){
         <div>
 
             <form onSubmit={formik.handleSubmit}>
-                <h1>Meditate</h1>
-                <h2>Select a Meditation</h2>
+                <h3>Meditate</h3>
+                <h4>Select a Meditation</h4>
                 <br />
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange}>
                     <option value="" disabled>Select a meditation</option>
@@ -62,12 +62,12 @@ function MeditateForm(){
                 </select>
                 <br />
                 
-                <h2>Completed Duration</h2>
+                <h4>Completed Duration</h4>
                 <br />
                 <input type="number" name="completed_duration" onChange={e => formik.setFieldValue('completed_duration', Number(e.target.value))} value={formik.values.completed_duration} />
                 <br />
 
-                <h2>Rate Your Session</h2>
+                <h4>Rate Your Session</h4>
                 <br />
                 <select name="rating" onChange={formik.handleChange} value={formik.values.rating}>
                     <option value={1}>1</option>
@@ -77,7 +77,7 @@ function MeditateForm(){
                     <option value={5}>5</option>
                 </select>
 
-                <h2>Leave a note</h2>
+                <h4>Leave a note</h4>
 
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
 

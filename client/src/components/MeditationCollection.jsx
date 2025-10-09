@@ -1,6 +1,5 @@
 import {useState} from "react";
 import { useOutletContext, Link } from "react-router-dom";
-import MeditationCard from "./MeditationCard";
 
 function MeditationCollection() {
     const {meditations} = useOutletContext();

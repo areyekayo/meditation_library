@@ -1,25 +1,20 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 function UserMeditationSessionCard({}) {
-    const [meditationSessions] = useOutletContext()
+    const {meditationSessions} = useOutletContext()
+    const {id} = useParams();
+    const sessionId = parseInt(id, 10);
+
+    const session = meditationSessions.find((s) => s.id == sessionId)
 
     return (
         <div>
-            {meditationSessions.map((meditation) => (
-                <div>
-                    <h2>{meditation.title}</h2>
-                    <p>Type: {meditation.type}</p>
-                    {meditation.meditation_sessions.map((session) => (
-                        <div>
-                        <h3>{session.session_timestamp}</h3>
-                        <p>You meditated for {session.completed_duration} minutes</p>
-                        <p>Your rating: {session.rating}</p>
-                        <p>{session.session_note}</p>
-                        </div>
-                    ))}
- 
-                </div>
-            ))}
+
+            <h2>{session.meditation.title} session at {session.session_timestamp}</h2>
+            <p>You meditated for {session.completed_duration} minutes</p>
+            <p>Your rating: {session.rating}</p>
+            <p>Note: {session.session_note}</p>
+                        
         </div>
     )
 }

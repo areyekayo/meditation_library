@@ -1,21 +1,18 @@
 import { useOutletContext, Link } from "react-router-dom";
-import UserMeditationSessionCard from "./UserMeditationSessionCard";
 
 function UserMeditationsList(){
-    const {userMeditations} = useOutletContext();
-
-    console.log(`user mediations: ${userMeditations}`)
-    
+    const {userMeditations} = useOutletContext();    
 
 
     return (
         <section>
+            <h3>Your Meditations</h3>
             {userMeditations ? (
                 userMeditations.map((meditation) => (
                     <div key={meditation.id}>
-                        <h2>
+                        <h4>
                             <Link to={`/meditations/${meditation.id}`}>{meditation.title}</Link>
-                        </h2>
+                        </h4>
                     </div>))
             ) : (
                 <p>You have no meditations</p>
