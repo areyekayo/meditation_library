@@ -11,7 +11,6 @@ from datetime import datetime
 from config import app, db, api
 from models import Meditation, User, MeditationSession
 
-
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
@@ -87,15 +86,6 @@ class SignUp(Resource):
             db.session.rollback()
             return {'errors': {'error': [str(e)]}}, 422
     
-# class UserById(Resource):
-#     def get(self):
-#         user_id = session.get('user_id')
-#         if user_id:
-#             user = User.query.filter(User.id == user_id).first()
-#             return user.to_dict(only=('id', 'meditation_sessions')), 200
-        
-       
-    
 class MeditationSessions(Resource):
     def get(self):
         user_id = session['user_id']
@@ -113,32 +103,6 @@ class MeditationSessions(Resource):
         ]
 
         return meditation_sessions, 200
-            
-        # meditation_map = {}
-
-
-        # for med in user.meditation_sessions:
-        #     meditation = med.meditation
-        #     if meditation.id not in meditation_map:
-        #         meditation_map[meditation.id] = {
-        #             "id": meditation.id,
-        #             "title": meditation.title,
-        #             "type": meditation.type,
-        #             "duration": meditation.duration,
-        #             "instructions": meditation.instructions,
-        #             "meditation_sessions": []
-        #         }
-        #     meditation_map[meditation.id]["meditation_sessions"].append({
-        #         "id": med.id,
-        #         "user_id": med.user_id,
-        #         "session_note": med.session_note,
-        #         "rating": med.rating,
-        #         "session_timestamp": med.session_timestamp.isoformat() if med.session_timestamp else None,
-        #         "completed_duration": med.completed_duration,
-        #         "meditation_id": med.meditation.id
-        #     })
-        
-        # return list(meditation_map.values()), 200
     
     def post(self):
         data = request.get_json()
@@ -176,7 +140,6 @@ api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
-# api.add_resource(Users, '/users')
 api.add_resource(MeditationById, '/meditations/<int:id>')
 api.add_resource(MeditationSessions, '/meditation_sessions')
 

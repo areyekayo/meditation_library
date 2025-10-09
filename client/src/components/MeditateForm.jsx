@@ -64,17 +64,17 @@ function MeditateForm(){
                 
                 <h2>Completed Duration</h2>
                 <br />
-                <input type="number" name="completed_duration" onChange={formik.handleChange} value={formik.values.completed_duration} />
+                <input type="number" name="completed_duration" onChange={e => formik.setFieldValue('completed_duration', Number(e.target.value))} value={formik.values.completed_duration} />
                 <br />
 
                 <h2>Rate Your Session</h2>
                 <br />
                 <select name="rating" onChange={formik.handleChange} value={formik.values.rating}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
                 </select>
 
                 <h2>Leave a note</h2>

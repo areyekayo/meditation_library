@@ -22,12 +22,6 @@ function App() {
       });
     }, [])
 
-    const userMeditationList = meditationSessions.reduce((acc, session) => {
-      if (!acc.find(med => med.id === session.meditation.id)) {
-        acc.push(session.meditation);
-      }
-      return acc
-    }, [])
 
     useEffect(() => {
       if (user) {
@@ -36,14 +30,23 @@ function App() {
           if (res.ok){
             res.json().then((sessions) => {
               setMeditationSessions(sessions);
-              setUserMeditations(userMeditationList);
-              console.log(userMeditationList)
           }
         )
           }
         })
       }
     }, [user])
+
+  useEffect(() => {
+    const userMeditationList = meditationSessions.reduce((acc, session) => {
+      if (!acc.find(med => med.id === session.meditation.id)) {
+        acc.push(session.meditation);
+      }
+      return acc
+    }, []);
+
+    setUserMeditations(userMeditationList);
+  }, [meditationSessions]);
 
 
     const onMeditation = (newMeditationSession) => {
