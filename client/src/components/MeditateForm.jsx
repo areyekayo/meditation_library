@@ -24,7 +24,6 @@ function MeditateForm(){
         },
         validationSchema: formSchema,
         onSubmit: (values, {resetForm}) => {
-            console.log("Submitting form with values:", values);
             const newSession = {
                 meditation: parseInt(values.meditation),
                 completed_duration: parseInt(values.completed_duration),
@@ -42,7 +41,6 @@ function MeditateForm(){
                         resetForm();
                         setSuccessMessage("Meditation session logged successfully!");
                         setTimeout(() => setSuccessMessage(""), 5000);
-                
                     })
                 }
                 else if (res.status === 422) {
@@ -59,7 +57,7 @@ function MeditateForm(){
 
             <form onSubmit={formik.handleSubmit}>
                 <h3>Meditate</h3>
-                {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
+                
                 <h4>Select a Meditation</h4>
                 <br />
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange}>
@@ -90,9 +88,9 @@ function MeditateForm(){
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
 
                 <br />
-
+                {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
+                <br />
                 <button type="submit">Log Meditation</button>
-
             </form>
         </div>
     )

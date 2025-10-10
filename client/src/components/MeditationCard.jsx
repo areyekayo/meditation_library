@@ -7,7 +7,7 @@ function MeditationCard(){
     
     const meditation = meditations.find((m) => m.id == medId)
 
-    const userSessions = meditationSessions ? meditationSessions.filter((session) => session.meditation_id == id) : [];
+    const userSessions = meditationSessions.filter((session) => session.meditation_id == id)
 
     return (
         <div>

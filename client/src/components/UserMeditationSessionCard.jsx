@@ -7,6 +7,8 @@ function UserMeditationSessionCard({}) {
 
     const session = meditationSessions.find((s) => s.id == sessionId)
 
+    //to do: add update and delete functionality
+
     return (
         <div>
 

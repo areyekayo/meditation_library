@@ -5,7 +5,6 @@
 # Remote library imports
 from flask import request, session
 from flask_restful import Resource
-from datetime import datetime
 
 # Local imports
 from config import app, db, api
@@ -30,14 +29,6 @@ class MeditationById(Resource):
             return {'error': 'Meditation not found'}, 404
 
         meditation_dict = meditation.to_dict(only=('id', 'title', 'type', 'duration', 'instructions'))
-        user_id = session.get('user_id')
-
-        # If user is logged in, return their meditation sessions for each meditation
-        if user_id:
-            user_meditations = [
-                s.to_dict(only=('id', 'completed_duration', 'rating', 'session_note', 'session_timestamp')) for s in meditation.meditation_sessions if s.user_id == user_id
-            ]
-            meditation_dict['meditation_sessions'] = user_meditations
 
         return meditation_dict, 200
     
@@ -133,17 +124,12 @@ class MeditationSessions(Resource):
             db.session.rollback()
             return {"errors": [str(e)]}, 400
         
-
-        
-
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
 api.add_resource(MeditationById, '/meditations/<int:id>')
 api.add_resource(MeditationSessions, '/meditation_sessions')
-
-
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

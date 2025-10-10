@@ -20,8 +20,7 @@ function App() {
           r.json().then((user) => setUser(user))
         }
       });
-    }, [])
-
+    }, []);
 
     useEffect(() => {
       if (user) {
@@ -30,23 +29,21 @@ function App() {
           if (res.ok){
             res.json().then((sessions) => {
               setMeditationSessions(sessions);
-          }
-        )
+            })
           }
         })
       }
-    }, [user])
+    }, [user]);
 
-  useEffect(() => {
-    const userMeditationList = meditationSessions.reduce((acc, session) => {
-      if (!acc.find(med => med.id === session.meditation.id)) {
-        acc.push(session.meditation);
-      }
-      return acc
-    }, []);
-
-    setUserMeditations(userMeditationList);
-  }, [meditationSessions]);
+    useEffect(() => {
+      const userMeditationList = meditationSessions.reduce((acc, session) => {
+        if (!acc.find(med => med.id === session.meditation.id)) {
+          acc.push(session.meditation);
+        }
+        return acc
+      }, []);
+      setUserMeditations(userMeditationList);
+    }, [meditationSessions]);
 
 
     const onMeditation = (newMeditationSession) => {
@@ -57,7 +54,6 @@ function App() {
 
     if (!user && location.pathname !== "/login") return <Navigate to='/login' />
     if (user && (location.pathname === "/login" || location.pathname === "/")) return <Navigate to='/meditate' />
-
 
     return (
         <div>
