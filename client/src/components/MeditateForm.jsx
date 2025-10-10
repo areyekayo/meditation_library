@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
 function MeditateForm(){
 
     const {meditations, onMeditation} = useOutletContext();
+    const [successMessage, setSuccessMessage] = useState("");
 
     const formSchema = yup.object().shape({
         meditation: yup.string().required("Select a meditation"),
@@ -22,7 +23,7 @@ function MeditateForm(){
             session_note: "",
         },
         validationSchema: formSchema,
-        onSubmit: (values) => {
+        onSubmit: (values, {resetForm}) => {
             console.log("Submitting form with values:", values);
             const newSession = {
                 meditation: parseInt(values.meditation),
@@ -36,7 +37,13 @@ function MeditateForm(){
                 body: JSON.stringify(newSession),
             }).then((res) => {
                 if (res.status === 201) {
-                    res.json().then(newMeditationSession => (onMeditation(newMeditationSession)))
+                    res.json().then(newMeditationSession => {
+                        onMeditation(newMeditationSession)
+                        resetForm();
+                        setSuccessMessage("Meditation session logged successfully!");
+                        setTimeout(() => setSuccessMessage(""), 5000);
+                
+                    })
                 }
                 else if (res.status === 422) {
                     res.json().then(errorData => {
@@ -52,6 +59,7 @@ function MeditateForm(){
 
             <form onSubmit={formik.handleSubmit}>
                 <h3>Meditate</h3>
+                {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
                 <h4>Select a Meditation</h4>
                 <br />
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange}>

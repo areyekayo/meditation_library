@@ -1,4 +1,3 @@
-import {useState} from "react";
 import { useOutletContext, Link } from "react-router-dom";
 
 function MeditationCollection() {

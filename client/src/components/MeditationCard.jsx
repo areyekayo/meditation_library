@@ -1,7 +1,7 @@
 import { useOutletContext, Link, useParams } from "react-router-dom"
 
 function MeditationCard(){
-    const {meditations, meditationSessions, user} = useOutletContext()
+    const {meditations, meditationSessions} = useOutletContext()
     const {id} = useParams();
     const medId = parseInt(id, 10);
     
