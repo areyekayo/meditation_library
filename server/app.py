@@ -56,6 +56,14 @@ class Login(Resource):
             return user.to_dict(), 200
         else:
             return {'errors': {'password': ['Invalid password']}}, 401
+    
+class Logout(Resource):
+    def delete(self):
+        user_id = session.get('user_id')
+        if user_id:
+            session['user_id'] = None
+            return {}, 204
+        return {'error': 'Unauthorized'}, 401
 
 class SignUp(Resource):
     def post(self):
@@ -126,6 +134,7 @@ class MeditationSessions(Resource):
         
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
 api.add_resource(MeditationById, '/meditations/<int:id>')

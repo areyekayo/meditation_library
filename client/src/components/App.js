@@ -4,7 +4,7 @@ import NavBar from './NavBar'
 
 function App() {
     const [meditations, setMeditations] = useState([]);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState("");
     const [meditationSessions, setMeditationSessions] = useState([]);
     const [userMeditations, setUserMeditations] = useState([]);
 
@@ -59,7 +59,7 @@ function App() {
         <div>
           <header>
           <h1>Meditation Library</h1>
-          <NavBar />
+          <NavBar setUser={setUser} user={user} />
           </header>
           <Outlet context={{meditations, onLogin: setUser, user, onMeditation, meditationSessions, userMeditations}} />
         </div>
