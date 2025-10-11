@@ -21,25 +21,26 @@ class Meditations(Resource):
             for meditation in Meditation.query.all()
         ]
         return meditations, 200
-    
-class MeditationById(Resource):
-    def get(self, id):
-        meditation = Meditation.query.filter(Meditation.id == id).first()
-        if not meditation:
-            return {'error': 'Meditation not found'}, 404
-
-        meditation_dict = meditation.to_dict(only=('id', 'title', 'type', 'duration', 'instructions'))
-
-        return meditation_dict, 200
-    
 
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id')
         if user_id:
             user = User.query.filter(User.id == user_id).first()
-            return user.to_dict(
-                only=('id', 'username')), 200
+            sessions = MeditationSession.query.filter(MeditationSession.user_id == user_id).all()
+            med_dict = {}
+
+            for s in sessions:
+                med_id = s.meditation.id
+                if med_id not in med_dict:
+                    med_dict[med_id] = s.meditation.to_dict()
+                    med_dict[med_id]['meditation_sessions'] = []
+                med_dict[med_id]['meditation_sessions'].append(s.to_dict(only=('id', 'rating', 'session_timestamp', 'completed_duration', 'meditation_id', 'user_id')))
+            meditations = list(med_dict.values())
+            user_dict = user.to_dict(only=('id', 'username'))
+            user_dict['meditations'] = meditations
+           
+            return user_dict, 200
         return {'error': 'Unauthorized'}, 401
     
 class Login(Resource):
@@ -137,7 +138,6 @@ api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
-api.add_resource(MeditationById, '/meditations/<int:id>')
 api.add_resource(MeditationSessions, '/meditation_sessions')
 
 if __name__ == '__main__':

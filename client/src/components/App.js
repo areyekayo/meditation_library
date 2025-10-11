@@ -17,38 +17,31 @@ function App() {
     useEffect(() => {
       fetch("/check_session").then((r) => {
         if (r.ok){
-          r.json().then((user) => setUser(user))
+          r.json().then((user) => {
+            setUser(user);
+            setUserMeditations(user.meditations)})
         }
       });
     }, []);
 
-    useEffect(() => {
-      if (user) {
-        fetch("/meditation_sessions")
-        .then((res) => {
-          if (res.ok){
-            res.json().then((sessions) => {
-              setMeditationSessions(sessions);
-            })
-          }
-        })
-      }
-    }, [user]);
+    // useEffect(() => {
+    //   if (user) {
+    //     fetch("/meditation_sessions")
+    //     .then((res) => {
+    //       if (res.ok){
+    //         res.json().then((sessions) => {
+    //           setMeditationSessions(sessions);
 
-    useEffect(() => {
-      const userMeditationList = meditationSessions.reduce((acc, session) => {
-        if (!acc.find(med => med.id === session.meditation.id)) {
-          acc.push(session.meditation);
-        }
-        return acc
-      }, []);
-      setUserMeditations(userMeditationList);
-    }, [meditationSessions]);
+    //         })
+    //       }
+    //     })
+    //   }
+    // }, [user]);
 
 
     const onMeditation = (newMeditationSession) => {
       setMeditationSessions(prevSessions => [...prevSessions, newMeditationSession]);
-    }
+    } // 
 
     const location = useLocation();
 

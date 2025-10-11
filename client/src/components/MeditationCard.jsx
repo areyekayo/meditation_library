@@ -1,13 +1,15 @@
 import { useOutletContext, Link, useParams } from "react-router-dom"
 
 function MeditationCard(){
-    const {meditations, meditationSessions} = useOutletContext()
+    const {user, meditations, userMeditations} = useOutletContext()
     const {id} = useParams();
     const medId = parseInt(id, 10);
     
     const meditation = meditations.find((m) => m.id == medId)
 
-    const userSessions = meditationSessions.filter((session) => session.meditation_id == id)
+    const userMeditation = userMeditations.find((m) => m.id === medId)
+
+    const sessions = userMeditation ? userMeditation.meditation_sessions : [] ;
 
     return (
         <div>
@@ -16,19 +18,19 @@ function MeditationCard(){
             <p>{meditation.duration} minutes</p>
             <p>{meditation.instructions}</p>
 
-            <h3>Your sessions with this meditation</h3>
-            {userSessions.length > 0 ? (
-                userSessions.map((session) => (
+            <h3>Sessions</h3>
+            {user && sessions.length > 0 ? ( 
+                sessions.map((session) => (
                     <div>
                          <Link key={session.id} to={`/meditation_sessions/${session.id}`}>{session.session_timestamp}</Link>
                     </div>
                 ))
             ) : (
                 <p>No sessions logged</p>
-            )
-            }
-        </div>
-    )
+            ) 
+
+        }
+        </div>)
 }
 
 export default MeditationCard;
