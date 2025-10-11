@@ -5,7 +5,6 @@ import NavBar from './NavBar'
 function App() {
     const [meditations, setMeditations] = useState([]);
     const [user, setUser] = useState("");
-    const [meditationSessions, setMeditationSessions] = useState([]);
     const [userMeditations, setUserMeditations] = useState([]);
 
     useEffect(() => {
@@ -14,20 +13,28 @@ function App() {
         .then(setMeditations);
     }, []);
 
-    useEffect(() => {
+    const checkSession = () => {
       fetch("/check_session").then((r) => {
         if (r.ok){
           r.json().then((user) => {
             setUser(user);
-            setUserMeditations(user.meditations)})
+            setUserMeditations(user.meditations);
+          })
+        } else {
+          setUser(null);
+          setUserMeditations([]);
         }
       });
+    }
+    // initial check session
+    useEffect(() => {
+      checkSession();
     }, []);
 
-
-    const onMeditation = (newMeditationSession) => {
-      setMeditationSessions(prevSessions => [...prevSessions, newMeditationSession]);
-    } // 
+    // when new session is added in meditate form, call check session again to refresh userMeditations
+    const onAddSession = () => {
+      checkSession()
+    }
 
     const location = useLocation();
 
@@ -40,7 +47,7 @@ function App() {
           <h1>Meditation Library</h1>
           <NavBar setUser={setUser} user={user} />
           </header>
-          <Outlet context={{meditations, onLogin: setUser, user, onMeditation, meditationSessions, userMeditations}} />
+          <Outlet context={{meditations, onLogin: setUser, user, onAddSession, userMeditations}} />
         </div>
     )
 }

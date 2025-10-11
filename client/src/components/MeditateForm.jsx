@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 
 function MeditateForm(){
 
-    const {meditations, onMeditation} = useOutletContext();
+    const {meditations, onAddSession} = useOutletContext();
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessages, setErrorMessages] = useState({});
 
@@ -27,45 +27,45 @@ function MeditateForm(){
         validateOnChange: true,
         onSubmit: async (values, {resetForm}) => {
             try {
-            const newSession = {
-                meditation: parseInt(values.meditation),
-                completed_duration: parseInt(values.completed_duration),
-                rating: parseInt(values.rating),
-                session_note: values.session_note
-            };
-            fetch("/meditation_sessions", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(newSession),
-            }).then((res) => {
-                if (res.ok) {
-                    res.json().then(newMeditationSession => {
-                        onMeditation(newMeditationSession)
-                        resetForm();
-                        setSuccessMessage("Meditation session logged successfully!");
-                        setTimeout(() => setSuccessMessage(""), 5000);
-                    })
-                }
-                else {
-                    const errorData = res.json()
-                    const errors = {};
-                    if (errorData.errors?.meditation){
-                        errors.meditation = errorData.erros.meditation[0];
+                const newSession = {
+                    meditation: parseInt(values.meditation),
+                    completed_duration: parseInt(values.completed_duration),
+                    rating: parseInt(values.rating),
+                    session_note: values.session_note
+                };
+                fetch("/meditation_sessions", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(newSession),
+                }).then((res) => {
+                    if (res.ok) {
+                        res.json().then(() => {
+                            onAddSession()
+                            resetForm();
+                            setSuccessMessage("Meditation session logged successfully!");
+                            setTimeout(() => setSuccessMessage(""), 5000);
+                        })
                     }
-                    if (errorData.errors?.completed_duration){
-                        errors.completed_duration = errorData.errors.completed_duration[0];
+                    else {
+                        const errorData = res.json()
+                        const errors = {};
+                        if (errorData.errors?.meditation){
+                            errors.meditation = errorData.erros.meditation[0];
+                        }
+                        if (errorData.errors?.completed_duration){
+                            errors.completed_duration = errorData.errors.completed_duration[0];
+                        }
+                        if (errorData.errors?.rating) {
+                            errors.rating = errorData.errors.rating[0];
+                        }
+                        setErrorMessages(errors)
                     }
-                    if (errorData.errors?.rating) {
-                        errors.rating = errorData.errors.rating[0];
-                    }
-                    setErrorMessages(errors)
-                }
-            })
-        }
+                })
+            }
             catch (error) {
                 console.error("Form submission failed: ", error);
             }
-    }
+        }
     });
 
     const getError = (field) => {
