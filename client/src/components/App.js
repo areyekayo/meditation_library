@@ -24,20 +24,6 @@ function App() {
       });
     }, []);
 
-    // useEffect(() => {
-    //   if (user) {
-    //     fetch("/meditation_sessions")
-    //     .then((res) => {
-    //       if (res.ok){
-    //         res.json().then((sessions) => {
-    //           setMeditationSessions(sessions);
-
-    //         })
-    //       }
-    //     })
-    //   }
-    // }, [user]);
-
 
     const onMeditation = (newMeditationSession) => {
       setMeditationSessions(prevSessions => [...prevSessions, newMeditationSession]);

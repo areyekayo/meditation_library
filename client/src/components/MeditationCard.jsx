@@ -26,7 +26,7 @@ function MeditationCard(){
                     </div>
                 ))
             ) : (
-                <p>No sessions logged</p>
+                <p>No sessions logged</p> //to do: add button to add session?
             ) 
 
         }
