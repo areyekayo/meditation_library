@@ -31,8 +31,8 @@ function App() {
       checkSession();
     }, []);
 
-    // when new session is added in meditate form, call check session again to refresh userMeditations
-    const onAddSession = () => {
+    // when changes are made to a user's meditations and their sessions, call check session again to refresh userMeditations
+    const onSessionRefresh = () => {
       checkSession()
     }
 
@@ -47,7 +47,7 @@ function App() {
           <h1>Meditation Library</h1>
           <NavBar setUser={setUser} user={user} />
           </header>
-          <Outlet context={{meditations, onLogin: setUser, user, onAddSession, userMeditations}} />
+          <Outlet context={{meditations, onLogin: setUser, user, onSessionRefresh, userMeditations}} />
         </div>
     )
 }

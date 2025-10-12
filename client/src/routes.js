@@ -3,7 +3,6 @@ import MeditationCollection from "./components/MeditationCollection";
 import Login from "./pages/Login";
 import Meditate from "./pages/Meditate";
 import MeditationCard from "./components/MeditationCard";
-import UserMeditationSessionCard from "./components/UserMeditationSessionCard";
 
 
 const routes = [
@@ -26,10 +25,6 @@ const routes = [
             {
                 path: "/meditate",
                 element: <Meditate />
-            },
-            {
-                path: "/meditation_sessions/:id",
-                element: <UserMeditationSessionCard />
             }
         ]
     }

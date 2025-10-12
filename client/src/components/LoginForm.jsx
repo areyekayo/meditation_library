@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useOutletContext } from "react-router-dom";
 
 function LoginForm() {
-  const { onLogin, onAddSession } = useOutletContext();
+  const { onLogin, onSessionRefresh } = useOutletContext();
   const [backendErrors, setBackendErrors] = useState({});
 
   const formSchema = yup.object().shape({
@@ -31,7 +31,7 @@ function LoginForm() {
           const user = await res.json();
           setBackendErrors({});
           onLogin(user);
-          onAddSession()
+          onSessionRefresh()
         } else { //get back end errors if username not found or password is invalid
             const errorData = await res.json();
             const errors = {};

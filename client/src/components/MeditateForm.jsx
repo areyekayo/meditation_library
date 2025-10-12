@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 
 function MeditateForm(){
 
-    const {meditations, onAddSession} = useOutletContext();
+    const {meditations, onSessionRefresh} = useOutletContext();
     const [successMessage, setSuccessMessage] = useState("");
 
     const formSchema = yup.object().shape({
@@ -39,7 +39,7 @@ function MeditateForm(){
                 }).then((res) => {
                     if (res.ok) {
                         res.json().then(() => {
-                            onAddSession();
+                            onSessionRefresh();
                             resetForm();
                             setSuccessMessage("Session logged successfully!");
                             setTimeout(() => setSuccessMessage(""), 5000);

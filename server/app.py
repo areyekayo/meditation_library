@@ -35,7 +35,7 @@ class CheckSession(Resource):
                 if med_id not in med_dict:
                     med_dict[med_id] = s.meditation.to_dict()
                     med_dict[med_id]['meditation_sessions'] = []
-                med_dict[med_id]['meditation_sessions'].append(s.to_dict(only=('id', 'rating', 'session_timestamp', 'completed_duration', 'meditation_id', 'user_id')))
+                med_dict[med_id]['meditation_sessions'].append(s.to_dict(only=('id', 'rating', 'session_timestamp', 'completed_duration', 'session_note', 'meditation_id', 'user_id')))
             meditations = list(med_dict.values())
             user_dict = user.to_dict(only=('id', 'username'))
             user_dict['meditations'] = meditations
@@ -132,6 +132,17 @@ class MeditationSessions(Resource):
         except Exception as e:
             db.session.rollback()
             return {"errors": [str(e)]}, 400
+
+class MeditationSessionById(Resource):
+    def delete(self, id):
+        med_session = MeditationSession.query.filter(MeditationSession.id == id).first()
+        if med_session:
+            db.session.delete(med_session)
+            db.session.commit()
+            return {}, 204
+        else:
+            return {"error": "Meditation session not found"}, 404
+
         
 api.add_resource(Meditations, '/meditations')
 api.add_resource(Login, '/login')
@@ -139,6 +150,7 @@ api.add_resource(Logout, '/logout')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(SignUp, '/signup')
 api.add_resource(MeditationSessions, '/meditation_sessions')
+api.add_resource(MeditationSessionById, '/meditation_sessions/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

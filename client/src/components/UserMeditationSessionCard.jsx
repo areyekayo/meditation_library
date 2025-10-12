@@ -1,21 +1,15 @@
-import { useOutletContext, useParams } from "react-router-dom";
 
-function UserMeditationSessionCard({}) {
-    const {meditationSessions} = useOutletContext()
-    const {id} = useParams();
-    const sessionId = parseInt(id, 10);
+function UserMeditationSessionCard({id, session_timestamp, completed_duration, rating, session_note, onDeleteClick}) {
 
-    const session = meditationSessions.find((s) => s.id == sessionId)
-
-    //to do: add update and delete functionality
 
     return (
         <div>
 
-            <h2>{session.meditation.title} session at {session.session_timestamp}</h2>
-            <p>You meditated for {session.completed_duration} minutes</p>
-            <p>Your rating: {session.rating}</p>
-            <p>Note: {session.session_note}</p>
+            <h4>{session_timestamp}</h4>
+            <p>You meditated for {completed_duration} minutes</p>
+            <p>Your rating: {rating}</p>
+            <p>Note: {session_note}</p>
+            <button onClick={() => onDeleteClick(id)}>Delete</button>
                         
         </div>
     )

@@ -1,7 +1,10 @@
-import { useOutletContext, Link, useParams } from "react-router-dom"
+import { useOutletContext, useParams } from "react-router-dom"
+import { useState, useEffect } from "react";
+import UserMeditationSessionCard from "./UserMeditationSessionCard";
 
 function MeditationCard(){
-    const {user, meditations, userMeditations} = useOutletContext()
+    const {user, meditations, userMeditations, onSessionRefresh} = useOutletContext();
+    const [sessions, setSessions] = useState([]);
     const {id} = useParams();
     const medId = parseInt(id, 10);
     
@@ -9,7 +12,20 @@ function MeditationCard(){
 
     const userMeditation = userMeditations.find((m) => m.id === medId)
 
-    const sessions = userMeditation ? userMeditation.meditation_sessions : [] ;
+    useEffect(() => {
+        if (userMeditation){setSessions(userMeditation.meditation_sessions)}
+    },[userMeditation])
+
+    const handleDeleteSession = (sessionId) => {
+        fetch(`/meditation_sessions/${sessionId}`, {
+            method: "DELETE",
+        }).then((r) => {
+            if (r.ok){
+                setSessions((sessions) => sessions.filter((session) => session.id !== sessionId));
+                onSessionRefresh()
+            }
+        })
+    }
 
     return (
         <div>
@@ -21,10 +37,15 @@ function MeditationCard(){
             <h3>Sessions</h3>
             {user && sessions.length > 0 ? ( 
                 sessions.map((session) => (
-                    <div>
-                         <Link key={session.id} to={`/meditation_sessions/${session.id}`}>{session.session_timestamp}</Link>
-                    </div>
-                ))
+                    <UserMeditationSessionCard
+                        key={session.id}
+                        id={session.id}
+                        completed_duration={session.completed_duration}
+                        session_timestamp={session.session_timestamp}
+                        rating={session.rating}
+                        session_note={session.session_note}
+                        onDeleteClick={handleDeleteSession} />
+                    ))
             ) : (
                 <p>No sessions logged</p> //to do: add button to add session?
             ) 

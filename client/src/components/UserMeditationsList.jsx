@@ -15,7 +15,7 @@ function UserMeditationsList(){
                         </h4>
                     </div>))
             ) : (
-                <p>You have no sessions with any meditation yet. Add one below!</p>
+                <p>You have no meditations with logged sessions yet. Add one below!</p>
             )
         }
 
