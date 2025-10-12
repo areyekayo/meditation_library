@@ -7,12 +7,11 @@ function MeditateForm(){
 
     const {meditations, onAddSession} = useOutletContext();
     const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessages, setErrorMessages] = useState({});
 
     const formSchema = yup.object().shape({
         meditation: yup.string().required("Select a meditation"),
-        completed_duration: yup.number().required("Enter your meditation session time in minutes"),
-        rating: yup.number().required("Rate your meditation session"),
+        completed_duration: yup.number().required("Enter your session time in minutes"),
+        rating: yup.number().required("Rate your session"),
         session_note: yup.string()
     });
 
@@ -40,43 +39,22 @@ function MeditateForm(){
                 }).then((res) => {
                     if (res.ok) {
                         res.json().then(() => {
-                            onAddSession()
+                            onAddSession();
                             resetForm();
-                            setSuccessMessage("Meditation session logged successfully!");
+                            setSuccessMessage("Session logged successfully!");
                             setTimeout(() => setSuccessMessage(""), 5000);
-                        })
-                    }
-                    else {
-                        const errorData = res.json()
-                        const errors = {};
-                        if (errorData.errors?.meditation){
-                            errors.meditation = errorData.erros.meditation[0];
-                        }
-                        if (errorData.errors?.completed_duration){
-                            errors.completed_duration = errorData.errors.completed_duration[0];
-                        }
-                        if (errorData.errors?.rating) {
-                            errors.rating = errorData.errors.rating[0];
-                        }
-                        setErrorMessages(errors)
-                    }
-                })
+                        });
+                    };
+                });
             }
             catch (error) {
                 console.error("Form submission failed: ", error);
-            }
+            };
         }
     });
 
-    const getError = (field) => {
-        if (errorMessages[field]) return errorMessages[field];
-        if (formik.touched[field] && formik.errors[field]) return formik.errors[field]
-        return null
-    }
-
     return (
         <div>
-
             <form onSubmit={formik.handleSubmit}>
                 <h3>Add A Session</h3>
                 
@@ -88,9 +66,8 @@ function MeditateForm(){
                         <option value={meditation.id} key={meditation.id}>{meditation.title}</option>
                     ))}
                 </select>
-                {getError("meditation") && <p style={{color: "red"}}>{getError("meditation")}</p>}
+                <p style={{color: "red"}}>{formik.errors.meditation}</p>
                 <br />
-                
                 <h4>Completed Duration</h4>
                 <br />
                 <input 
@@ -101,7 +78,7 @@ function MeditateForm(){
                     onBlur={formik.handleBlur} />
                 <br />
 
-                {getError("completed_duration") && <p style={{color: "red"}}>{getError("completed_duration")}</p>}
+                <p style={{color: "red"}}>{formik.errors.completed_duration}</p>
 
                 <h4>Rate Your Session</h4>
                 <br />
@@ -117,7 +94,7 @@ function MeditateForm(){
                         <option value={5}>5</option>
                 </select>
 
-                {getError("rating") && <p style={{color: "red"}}>{getError("rating")}</p>}
+                <p style={{color: "red"}}>{formik.errors.rating}</p>
 
                 <h4>Leave a note</h4>
 

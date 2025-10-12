@@ -31,19 +31,19 @@ function LoginForm() {
           const user = await res.json();
           setBackendErrors({});
           onLogin(user);
-          onAddSession(user.meditations)
-        } else {
-          const errorData = await res.json();
-          const errors = {};
-          if (errorData.errors?.username) {
-            errors.username = errorData.errors.username[0];
-          }
-          if (errorData.errors?.password) {
-            errors.password = errorData.errors.password[0];
-          }
-          setErrors(errors);
-          setBackendErrors(errors);
-          setFieldValue("password", "");
+          onAddSession()
+        } else { //get back end errors if username not found or password is invalid
+            const errorData = await res.json();
+            const errors = {};
+            if (errorData.errors?.username) {
+              errors.username = errorData.errors.username[0];
+            }
+            if (errorData.errors?.password) {
+              errors.password = errorData.errors.password[0];
+            }
+            setErrors(errors);
+            setBackendErrors(errors);
+            setFieldValue("password", "");
         }
       } catch (error) {
         console.error("Login request failed:", error);
