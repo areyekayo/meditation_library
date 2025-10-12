@@ -21,7 +21,7 @@ if __name__ == '__main__':
         MeditationSession.query.delete()
 
         print("Creating meditations...")
-        metta = Meditation(title="Lovingkindness", duration=15, instructions=fake.sentence(), type="Lovingkindness")
+        metta = Meditation(title="Cultivating kindness", duration=15, instructions=fake.sentence(), type="Lovingkindness")
 
         insight = Meditation(title="Being Present", duration=15, instructions=fake.sentence(), type="Vipassana")
 
@@ -38,12 +38,14 @@ if __name__ == '__main__':
         sam = User(username="sam")
         alex = User(username="alex")
         steph = User(username="steph")
+        newbie = User(username="newbie")
         
         riko.password_hash = riko.username + 'password'
         sam.password_hash = sam.username + 'password'
         alex.password_hash = alex.username + 'password'
         steph.password_hash = steph.username + 'password'
-        users = [riko, sam, alex, steph]
+        newbie.password_hash = newbie.username + 'password'
+        users = [riko, sam, alex, steph, newbie]
 
         print("Creating meditation sessions...")
         session1 = MeditationSession(completed_duration=15, rating=5, session_note=fake.sentence(), meditation=metta, user=riko)

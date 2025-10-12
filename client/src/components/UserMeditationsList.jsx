@@ -7,7 +7,7 @@ function UserMeditationsList(){
     return (
         <section>
             <h3>Your Meditations</h3>
-            {userMeditations ? (
+            {userMeditations.length > 0 ? (
                 userMeditations.map((meditation) => (
                     <div key={meditation.id}>
                         <h4>
@@ -15,7 +15,7 @@ function UserMeditationsList(){
                         </h4>
                     </div>))
             ) : (
-                <p>You have no meditations</p>
+                <p>You have no sessions with any meditation yet. Add one below!</p>
             )
         }
 

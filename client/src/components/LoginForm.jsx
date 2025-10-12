@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useOutletContext } from "react-router-dom";
 
 function LoginForm() {
-  const { onLogin } = useOutletContext();
+  const { onLogin, onAddSession } = useOutletContext();
   const [backendErrors, setBackendErrors] = useState({});
 
   const formSchema = yup.object().shape({
@@ -31,6 +31,7 @@ function LoginForm() {
           const user = await res.json();
           setBackendErrors({});
           onLogin(user);
+          onAddSession(user.meditations)
         } else {
           const errorData = await res.json();
           const errors = {};

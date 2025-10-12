@@ -54,7 +54,7 @@ class Login(Resource):
             return {'errors': {'username': ['Username not found']}}, 401
         if user.authenticate(password):
             session['user_id'] = user.id
-            return user.to_dict(), 200
+            return user.to_dict(only=('id', 'username', 'meditations')), 200
         else:
             return {'errors': {'password': ['Invalid password']}}, 401
     
