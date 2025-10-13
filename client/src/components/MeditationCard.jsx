@@ -44,7 +44,8 @@ function MeditationCard(){
                         session_timestamp={session.session_timestamp}
                         rating={session.rating}
                         session_note={session.session_note}
-                        onDeleteClick={handleDeleteSession} />
+                        onDeleteClick={handleDeleteSession}
+                        meditation={meditation} />
                     ))
             ) : (
                 <p>No sessions logged</p> //to do: add button to add session?

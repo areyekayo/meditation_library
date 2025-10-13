@@ -142,6 +142,20 @@ class MeditationSessionById(Resource):
             return {}, 204
         else:
             return {"error": "Meditation session not found"}, 404
+    
+    def patch(self, id):
+        med_session = MeditationSession.query.filter(MeditationSession.id == id).first()
+        if med_session:
+            data = request.get_json()
+            for attr, value in data.items():
+                setattr(med_session, attr, value)
+            db.session.add(med_session)
+            db.session.commit()
+            
+            return med_session.to_dict(only=('id', 'session_timestamp', 'completed_duration', 'rating', 'session_note', 'user_id', 'meditation_id')), 200
+        else:
+            return {'error': 'Meditation session not found'}, 404
+
 
         
 api.add_resource(Meditations, '/meditations')
