@@ -80,7 +80,7 @@ h3 {
 }
 
 .list {
-  background-color: #d5d5d5;
+  background-color: #e7e6e6;
   border-radius:  8px;
   padding: 16px;
   box-shadow: 0 2px 4px rgbha(0, 0, 0, 0.1);
@@ -95,3 +95,4 @@ h3 {
   justify-content: center;
   display: grid;
 }
+

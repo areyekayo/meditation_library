@@ -37,18 +37,17 @@ function SignupForm() {
     });
     return (
         <div className="new-entry-form">
-            <form onSubmit={formik.handleSubmit} style={{margin: "30px"}}>
+            <h4>Create An Account</h4>
+            <form onSubmit={formik.handleSubmit}>
                 <label htmlFor="username">Username</label>
-                <br />
                 <input
                     id="username"
                     name="username"
                     onChange={formik.handleChange}
                     value={formik.values.username} 
                 />
-                <p style={{color: "red"}}> {formik.errors.username}</p>
+                {formik.errors.username? (<p style={{color: "red"}}> {formik.errors.username}</p>) : (null)}
                 <label htmlFor="name">Password</label>
-                <br />
                 <input 
                     id="password"
                     name="password"
@@ -56,7 +55,7 @@ function SignupForm() {
                     onChange={formik.handleChange}
                     value={formik.values.password}    
                 />
-                <p style={{color: "red"}}> {formik.errors.password}</p>
+                {formik.errors.password? (<p style={{color: "red"}}> {formik.errors.password}</p>) : (null) }
                 <button type="submit">Sign Up</button>
             </form>
         </div>

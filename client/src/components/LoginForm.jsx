@@ -60,7 +60,8 @@ function LoginForm() {
 
   return (
     <div className="new-entry-form">
-      <form onSubmit={formik.handleSubmit} style={{ margin: "30px" }}>
+      <h4>Log In</h4>
+      <form onSubmit={formik.handleSubmit}>
         <label htmlFor="username">Username</label>
         <input
           id="username"
