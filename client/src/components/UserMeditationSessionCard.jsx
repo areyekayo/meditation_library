@@ -61,7 +61,7 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
             <p>Note: {session_note}</p>
             <button onClick={() => onDeleteClick(id)}>Delete</button>
             <br />
-            <button onClick={() => setShowUpdateForm(!showUpdateForm)}>Update</button> 
+            <button className="button" onClick={() => setShowUpdateForm(!showUpdateForm)}>Edit</button> 
             {showUpdateForm ? (
                 <div>
                     <form onSubmit={formik.handleSubmit}>
@@ -92,7 +92,7 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
                         <br />
                         {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
                         <br />
-                        <button type="submit">Update Session</button>
+                        <button type="submit">Submit</button>
                             
                     </form>
                 </div>

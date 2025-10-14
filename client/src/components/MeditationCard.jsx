@@ -42,6 +42,7 @@ function MeditationCard(){
         </div>
 
             <h3>Sessions</h3>
+            <div className="sessions">
             {user && sessions.length > 0 ? ( 
                 sessions.map((session) => (
                     <UserMeditationSessionCard
@@ -57,8 +58,9 @@ function MeditationCard(){
             ) : (
                 <p>No sessions logged</p> //to do: add button to add session?
             ) 
-
         }
+            </div>
+
         </>
     )
 }

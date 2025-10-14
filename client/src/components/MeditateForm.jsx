@@ -11,7 +11,7 @@ function MeditateForm(){
     const formSchema = yup.object().shape({
         meditation: yup.string().required("Select a meditation"),
         completed_duration: yup.number().required("Enter your session time in minutes"),
-        rating: yup.number().required("Rate your session"),
+        rating: yup.number().required("Enter a rating for your session"),
         session_note: yup.string()
     });
 
@@ -64,7 +64,7 @@ function MeditateForm(){
                         <option value={meditation.id} key={meditation.id}>{meditation.title}</option>
                     ))}
                 </select>
-                <p style={{color: "red"}}>{formik.errors.meditation}</p>
+                {formik.errors.meditation ? (<p style={{color: "red"}}>{formik.errors.meditation}</p>): (null) }
 
                 <h4>Completed Duration</h4>
                 <input 
@@ -73,7 +73,7 @@ function MeditateForm(){
                     onChange={e => formik.setFieldValue('completed_duration', Number(e.target.value))}
                     value={formik.values.completed_duration}
                     onBlur={formik.handleBlur} />
-                <p style={{color: "red"}}>{formik.errors.completed_duration}</p>
+                {formik.errors.completed_duration ? (<p style={{color: "red"}}>{formik.errors.completed_duration}</p>) : (null) }
 
                 <h4>Rate Your Session</h4>
                 <select name="rating" 
@@ -87,7 +87,7 @@ function MeditateForm(){
                         <option value={4}>4</option>
                         <option value={5}>5</option>
                 </select>
-                <p style={{color: "red"}}>{formik.errors.rating}</p>
+                {formik.errors.rating ? (<p style={{color: "red"}}>{formik.errors.rating}</p>) : (null)}
 
                 <h4>Leave a note</h4>
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>

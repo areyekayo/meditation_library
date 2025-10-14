@@ -35,10 +35,10 @@ h3 {
   text-align: center;
   border: grey solid 1px;
   padding: 1rem;
-  width: 20rem;
-  height: 20rem;
+  width: 400px;
+  max-height: fit-content;
   display: inline-grid;
-  margin: 1rem 2rem;
+  margin: 20px auto;
   box-shadow: 3px 4px #000000;
   overflow: scroll;
 }
@@ -46,7 +46,7 @@ h3 {
 .new-entry-form {
   width: 80%;
   max-width: 400px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   text-align: center;
   font-family: 'Roboto';
 }
@@ -59,6 +59,7 @@ h3 {
 .new-entry-form form > * {
   width: 100%;
   font-family: 'Roboto Mono';
+  margin: 1px;
 }
 
 .new-entry-form textarea {
@@ -87,4 +88,10 @@ h3 {
   max-width: 400px;
   text-align: center;
   font-family: 'Roboto';
+}
+
+.sessions {
+  align-items: center;
+  justify-content: center;
+  display: grid;
 }
