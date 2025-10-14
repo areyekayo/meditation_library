@@ -5,7 +5,7 @@ function UserMeditationsList(){
 
 
     return (
-        <section>
+        <section className="list">
             <h3>Your Meditations</h3>
             {userMeditations.length > 0 ? (
                 userMeditations.map((meditation) => (

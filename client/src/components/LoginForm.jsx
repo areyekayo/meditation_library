@@ -30,7 +30,7 @@ function LoginForm() {
         if (res.ok) {
           const user = await res.json();
           setBackendErrors({});
-          onLogin(user);
+          onLogin({id: user.id, username: user.username});
           onSessionRefresh()
         } else { //get back end errors if username not found or password is invalid
             const errorData = await res.json();
@@ -59,10 +59,9 @@ function LoginForm() {
   };
 
   return (
-    <div>
+    <div className="new-entry-form">
       <form onSubmit={formik.handleSubmit} style={{ margin: "30px" }}>
         <label htmlFor="username">Username</label>
-        <br />
         <input
           id="username"
           name="username"
@@ -73,11 +72,8 @@ function LoginForm() {
           onBlur={formik.handleBlur}
           value={formik.values.username}
         />
-        <br />
         {getError("username") && <p style={{ color: "red" }}>{getError("username")}</p>}
-        <br />
         <label htmlFor="password">Password</label>
-        <br />
         <input
           id="password"
           name="password"
@@ -90,8 +86,6 @@ function LoginForm() {
           value={formik.values.password}
         />
         {getError("password") && <p style={{ color: "red" }}>{getError("password")}</p>}
-
-        <br />
         <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>
           Login
         </button>

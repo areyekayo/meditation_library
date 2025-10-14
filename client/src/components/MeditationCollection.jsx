@@ -4,7 +4,8 @@ function MeditationCollection() {
     const {meditations} = useOutletContext();
 
     return(
-        <div>
+        <div className="list">
+            <h3>Available Meditations</h3>
             {meditations.map(meditation => (
                 <>
                     <br />

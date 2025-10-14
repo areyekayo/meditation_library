@@ -40,8 +40,8 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
                         res.json().then(() => {
                             onSessionRefresh();
                             setSuccessMessage("Session updated successfully!")
-                            setTimeout(() => setSuccessMessage(""), 5000);
-                            setTimeout(() => setShowUpdateForm(false), 5000);
+                            setTimeout(() => setSuccessMessage(""), 4000);
+                            setTimeout(() => setShowUpdateForm(false), 4000);
                         })
                     }
                 })
@@ -54,12 +54,13 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
 
 
     return (
-        <div>
+        <div className="card">
             <h4>{session_timestamp}</h4>
             <p>You meditated for {completed_duration} minutes</p>
             <p>Your rating: {rating}</p>
             <p>Note: {session_note}</p>
             <button onClick={() => onDeleteClick(id)}>Delete</button>
+            <br />
             <button onClick={() => setShowUpdateForm(!showUpdateForm)}>Update</button> 
             {showUpdateForm ? (
                 <div>

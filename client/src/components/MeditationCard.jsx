@@ -8,13 +8,17 @@ function MeditationCard(){
     const {id} = useParams();
     const medId = parseInt(id, 10);
     
-    const meditation = meditations.find((m) => m.id == medId)
+    const meditation = meditations.find((m) => m.id === medId)
 
     const userMeditation = userMeditations.find((m) => m.id === medId)
 
     useEffect(() => {
         if (userMeditation){setSessions(userMeditation.meditation_sessions)}
     },[userMeditation])
+
+    if (!meditation){
+        return <p>Loading meditation...</p>
+    }
 
     const handleDeleteSession = (sessionId) => {
         fetch(`/meditation_sessions/${sessionId}`, {
@@ -28,11 +32,14 @@ function MeditationCard(){
     }
 
     return (
-        <div>
+        <>
+        <div className="list">
             <h2>{meditation.title}</h2>
             <p>Type: {meditation.type}</p>
             <p>{meditation.duration} minutes</p>
             <p>{meditation.instructions}</p>
+
+        </div>
 
             <h3>Sessions</h3>
             {user && sessions.length > 0 ? ( 
@@ -52,7 +59,8 @@ function MeditationCard(){
             ) 
 
         }
-        </div>)
+        </>
+    )
 }
 
 export default MeditationCard;

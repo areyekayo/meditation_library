@@ -15,6 +15,7 @@ def index():
     return '<h1>Project Server</h1>'
 
 class Meditations(Resource):
+    # Gets all meditations to show in the Library
     def get(self):
         meditations = [
             meditation.to_dict(only=('id', 'title', 'duration', 'type', 'instructions'))
@@ -23,11 +24,14 @@ class Meditations(Resource):
         return meditations, 200
 
 class CheckSession(Resource):
+    # Sets user_id and gets user's meditations and nested meditation sessions
     def get(self):
         user_id = session.get('user_id')
         if user_id:
             user = User.query.filter(User.id == user_id).first()
             sessions = MeditationSession.query.filter(MeditationSession.user_id == user_id).all()
+            
+            # Create meditation dict with user's nested sessions
             med_dict = {}
 
             for s in sessions:
@@ -36,6 +40,7 @@ class CheckSession(Resource):
                     med_dict[med_id] = s.meditation.to_dict()
                     med_dict[med_id]['meditation_sessions'] = []
                 med_dict[med_id]['meditation_sessions'].append(s.to_dict(only=('id', 'rating', 'session_timestamp', 'completed_duration', 'session_note', 'meditation_id', 'user_id')))
+                
             meditations = list(med_dict.values())
             user_dict = user.to_dict(only=('id', 'username'))
             user_dict['meditations'] = meditations
@@ -44,6 +49,7 @@ class CheckSession(Resource):
         return {'error': 'Unauthorized'}, 401
     
 class Login(Resource):
+    # Logs user into their account
     def post(self):
         data = request.get_json()
         username = data.get('username')
@@ -59,6 +65,7 @@ class Login(Resource):
             return {'errors': {'password': ['Invalid password']}}, 401
     
 class Logout(Resource):
+    # logs user out of account
     def delete(self):
         user_id = session.get('user_id')
         if user_id:
@@ -67,6 +74,7 @@ class Logout(Resource):
         return {'error': 'Unauthorized'}, 401
 
 class SignUp(Resource):
+    # Signs up new users for an account
     def post(self):
         data = request.get_json()
         username = data.get('username')
@@ -87,23 +95,7 @@ class SignUp(Resource):
             return {'errors': {'error': [str(e)]}}, 422
     
 class MeditationSessions(Resource):
-    def get(self):
-        user_id = session['user_id']
-        if not user_id:
-            return {'error': 'Unauthorized'}, 401
-        
-        user = User.query.get(user_id)
-        if not user:
-            return {'error': 'User not found'}, 404
-        
-        meditation_sessions = [
-            meditation_session.to_dict(only=(
-                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id', 'meditation'
-            )) for meditation_session in user.meditation_sessions
-        ]
-
-        return meditation_sessions, 200
-    
+    # Create new meditation sessions
     def post(self):
         data = request.get_json()
         user_id = session.get('user_id')
@@ -134,7 +126,12 @@ class MeditationSessions(Resource):
             return {"errors": [str(e)]}, 400
 
 class MeditationSessionById(Resource):
+    # deletes and updates a specific meditation session
     def delete(self, id):
+        user_id = session.get('user_id')
+        user = User.query.get(user_id)
+        if not user: return {'error': 'Unauthorized'}, 401
+        
         med_session = MeditationSession.query.filter(MeditationSession.id == id).first()
         if med_session:
             db.session.delete(med_session)
@@ -144,6 +141,10 @@ class MeditationSessionById(Resource):
             return {"error": "Meditation session not found"}, 404
     
     def patch(self, id):
+        user_id = session.get('user_id')
+        user = User.query.get(user_id)
+        if not user: return {'error': 'Unauthorized'}, 401
+        
         med_session = MeditationSession.query.filter(MeditationSession.id == id).first()
         if med_session:
             data = request.get_json()

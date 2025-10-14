@@ -4,7 +4,7 @@ import NavBar from './NavBar'
 
 function App() {
     const [meditations, setMeditations] = useState([]);
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState({id: "", username: ""});
     const [userMeditations, setUserMeditations] = useState([]);
 
     useEffect(() => {
@@ -13,11 +13,12 @@ function App() {
         .then(setMeditations);
     }, []);
 
+    // Function to enable auto-login and refresh user meditations state
     const checkSession = () => {
       fetch("/check_session").then((r) => {
         if (r.ok){
           r.json().then((user) => {
-            setUser(user);
+            setUser({id: user.id, username: user.username});
             setUserMeditations(user.meditations);
           })
         } else {
@@ -35,15 +36,15 @@ function App() {
     const onSessionRefresh = () => {
       checkSession()
     }
-
+    
     const location = useLocation();
 
     if (!user && location.pathname !== "/login") return <Navigate to='/login' />
     if (user && (location.pathname === "/login" || location.pathname === "/")) return <Navigate to='/meditate' />
 
     return (
-        <div>
-          <header>
+        <div className="App">
+          <header className="App-header">
           <h1>Meditation Library</h1>
           <NavBar setUser={setUser} user={user} />
           </header>

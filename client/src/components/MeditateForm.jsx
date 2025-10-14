@@ -41,7 +41,7 @@ function MeditateForm(){
                         res.json().then(() => {
                             onSessionRefresh();
                             resetForm();
-                            setSuccessMessage("Session logged successfully!");
+                            setSuccessMessage("Meditation session created successfully!");
                             setTimeout(() => setSuccessMessage(""), 5000);
                         });
                     };
@@ -54,12 +54,10 @@ function MeditateForm(){
     });
 
     return (
-        <div>
+        <div className="new-entry-form">
             <form onSubmit={formik.handleSubmit}>
                 <h3>Add A Session</h3>
-                
                 <h4>Select a Meditation</h4>
-                <br />
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange} onBlur={formik.handleBlur}>
                     <option value="" disabled>Select a meditation</option>
                     {meditations.map((meditation) => (
@@ -67,21 +65,17 @@ function MeditateForm(){
                     ))}
                 </select>
                 <p style={{color: "red"}}>{formik.errors.meditation}</p>
-                <br />
+
                 <h4>Completed Duration</h4>
-                <br />
                 <input 
                     type="number" 
                     name="completed_duration" 
                     onChange={e => formik.setFieldValue('completed_duration', Number(e.target.value))}
                     value={formik.values.completed_duration}
                     onBlur={formik.handleBlur} />
-                <br />
-
                 <p style={{color: "red"}}>{formik.errors.completed_duration}</p>
 
                 <h4>Rate Your Session</h4>
-                <br />
                 <select name="rating" 
                     onChange={formik.handleChange} 
                     value={formik.values.rating}
@@ -93,17 +87,12 @@ function MeditateForm(){
                         <option value={4}>4</option>
                         <option value={5}>5</option>
                 </select>
-
                 <p style={{color: "red"}}>{formik.errors.rating}</p>
 
                 <h4>Leave a note</h4>
-
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
-
-                <br />
                 {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
-                <br />
-                <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Log Meditation</button>
+                <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Add Session</button>
             </form>
         </div>
     )

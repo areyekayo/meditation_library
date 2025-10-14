@@ -36,7 +36,7 @@ function SignupForm() {
         },
     });
     return (
-        <div>
+        <div className="new-entry-form">
             <form onSubmit={formik.handleSubmit} style={{margin: "30px"}}>
                 <label htmlFor="username">Username</label>
                 <br />

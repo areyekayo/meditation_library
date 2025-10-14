@@ -16,12 +16,12 @@ function NavBar({user, setUser}) {
 
     return (
         <nav>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/meditations">Library</NavLink>
+            <NavLink className="nav-link" to="/">Home</NavLink>
+            <NavLink className="nav-link" to="/meditations">Library</NavLink>
             {user ? (
-                <button onClick={handleLogOut} style={{cursor: 'pointer', background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'blue', textDecoration: 'underline'}}>Logout</button>
+                <button onClick={handleLogOut} className="nav-link">Logout</button>
             ) : (
-                <NavLink to="/login">Login</NavLink>
+                <NavLink className="nav-link"to="/login">Login</NavLink>
             )}
         </nav>
     )
