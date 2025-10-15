@@ -7,11 +7,11 @@ function MeditationCollection() {
         <div className="list">
             <h3>Available Meditations</h3>
             {meditations.map(meditation => (
-                <>
-                    <br />
+                <div key={meditation.id}>
+                    <h4>
                     <Link to={`/meditations/${meditation.id}`} key={meditation.id}>{meditation.title}</Link>
-                    <br />
-                </>
+                    </h4>
+                </div>
             ))}
         </div>
     )
