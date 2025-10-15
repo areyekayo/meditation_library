@@ -3,15 +3,15 @@ import { useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
-function MeditateForm(){
+function MeditationSessionForm(){
 
     const {meditations, onSessionRefresh} = useOutletContext();
     const [successMessage, setSuccessMessage] = useState("");
 
     const formSchema = yup.object().shape({
-        meditation: yup.string().required("Select a meditation"),
-        completed_duration: yup.number().required("Enter your session time in minutes"),
-        rating: yup.number().required("Enter a rating for your session"),
+        meditation: yup.string().required("Meditation is required"),
+        completed_duration: yup.number().required("Please enter your session time in minutes"),
+        rating: yup.number().required("Please enter a rating for your session"),
         session_note: yup.string()
     });
 
@@ -24,7 +24,7 @@ function MeditateForm(){
         },
         validationSchema: formSchema,
         validateOnChange: true,
-        onSubmit: async (values, {resetForm}) => {
+        onSubmit: (values, {resetForm}) => {
             try {
                 const newSession = {
                     meditation: parseInt(values.meditation),
@@ -89,7 +89,7 @@ function MeditateForm(){
                 </select>
                 {formik.errors.rating ? (<p style={{color: "red"}}>{formik.errors.rating}</p>) : (null)}
 
-                <h4>Leave a note</h4>
+                <h4>Note</h4>
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
                 {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
                 <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Add Session</button>
@@ -99,4 +99,4 @@ function MeditateForm(){
 
 };
 
-export default MeditateForm;
+export default MeditationSessionForm;

@@ -22,6 +22,22 @@ class Meditations(Resource):
             for meditation in Meditation.query.all()
         ]
         return meditations, 200
+    
+    def post(self):
+        data = request.get_json()
+        try:
+            meditation = Meditation(
+                title=data['title'],
+                type=data['type'],
+                duration=data['duration'],
+                instructions=data['instructions']
+            )
+            db.session.add(meditation)
+            db.session.commit()
+            return meditation.to_dict(only=('id', 'title', 'duration', 'type', 'instructions')), 201
+        except Exception as e:
+            db.session.rollback()
+            return {'errors': [str(e)]}, 400
 
 class CheckSession(Resource):
     # Sets user_id and gets user's meditations and nested meditation sessions
@@ -40,7 +56,7 @@ class CheckSession(Resource):
                     med_dict[med_id] = s.meditation.to_dict()
                     med_dict[med_id]['meditation_sessions'] = []
                 med_dict[med_id]['meditation_sessions'].append(s.to_dict(only=('id', 'rating', 'session_timestamp', 'completed_duration', 'session_note', 'meditation_id', 'user_id')))
-                
+
             meditations = list(med_dict.values())
             user_dict = user.to_dict(only=('id', 'username'))
             user_dict['meditations'] = meditations

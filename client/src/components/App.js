@@ -36,6 +36,10 @@ function App() {
     const onSessionRefresh = () => {
       checkSession()
     }
+
+    const onAddMeditation = (newMeditation) => {
+      setMeditations([...meditations, newMeditation])
+    }
     
     const location = useLocation();
 
@@ -48,7 +52,7 @@ function App() {
           <h1>Meditation Library</h1>
           <NavBar setUser={setUser} user={user} />
           </header>
-          <Outlet context={{meditations, onLogin: setUser, user, onSessionRefresh, userMeditations}} />
+          <Outlet context={{meditations, onLogin: setUser, user, onSessionRefresh, userMeditations, onAddMeditation}} />
         </div>
     )
 }

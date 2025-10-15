@@ -9,11 +9,9 @@ function UserMeditationsList(){
             <h3>Your Meditations</h3>
             {userMeditations.length > 0 ? (
                 userMeditations.map((meditation) => (
-                    <div key={meditation.id}>
-                        <h4>
-                            <Link to={`/meditations/${meditation.id}`}>{meditation.title}</Link>
-                        </h4>
-                    </div>))
+                    <h4 key={meditation.id}>
+                        <Link to={`/meditations/${meditation.id}`}>{meditation.title}</Link>
+                    </h4>))
             ) : (
                 <p>You have no meditations with logged sessions yet. Add one below!</p>
             )

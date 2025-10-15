@@ -1,10 +1,7 @@
-import { useState } from "react";
-import MeditateForm from "../components/MeditateForm";
+import MeditationSessionForm from "../components/MeditationSessionForm";
 import UserMeditationsList from "../components/UserMeditationsList";
 
 function Meditate(){
-    const [showMeditateForm, setShowMeditateForm] = useState(true);
-
 
     return (
         <>
@@ -12,7 +9,7 @@ function Meditate(){
                 <UserMeditationsList />
             </div>
             <div>
-                <MeditateForm />
+                <MeditationSessionForm />
             </div>
         </>
 
