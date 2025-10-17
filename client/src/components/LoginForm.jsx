@@ -34,15 +34,10 @@ function LoginForm() {
           onSessionRefresh()
         } else { //get back end errors if username not found or password is invalid
             const errorData = await res.json();
-            const errors = {};
-            if (errorData.errors?.username) {
-              errors.username = errorData.errors.username[0];
+            if (errorData.errors?.login) {
+              setErrors({login: errorData.errors.login[0]});
+              setBackendErrors({login: errorData.errors.login[0]});
             }
-            if (errorData.errors?.password) {
-              errors.password = errorData.errors.password[0];
-            }
-            setErrors(errors);
-            setBackendErrors(errors);
             setFieldValue("password", "");
         }
       } catch (error) {
@@ -53,7 +48,7 @@ function LoginForm() {
 
   // Custom error display logic prioritizing backend error if exists
   const getError = (field) => {
-    if (backendErrors[field]) return backendErrors[field];
+    if (backendErrors.login) return backendErrors.login;
     if (formik.touched[field] && formik.errors[field]) return formik.errors[field];
     return null;
   };
