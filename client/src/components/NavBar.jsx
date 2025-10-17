@@ -19,7 +19,7 @@ function NavBar() {
 
     return (
         <nav>
-            <NavLink className="nav-link" to="/">Home</NavLink>
+            <NavLink className="nav-link" to="/meditate">Home</NavLink>
             <NavLink className="nav-link" to="/meditations">Library</NavLink>
             {user ? (
                 <button onClick={handleLogOut} className="nav-link">Logout</button>

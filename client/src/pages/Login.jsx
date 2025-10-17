@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
+import { useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 function Login(){
     const [showLogin, setShowLogin] = useState(true);
+    const {user} = useContext(UserContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (user && location.pathname === "/login") {
+            navigate("/meditate", {replace: true});
+            console.log("redirect to /meditate from login page")
+        }
+    }, [user, navigate, location.pathname])
 
     return (
         <div>

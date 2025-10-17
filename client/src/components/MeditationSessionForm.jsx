@@ -59,6 +59,7 @@ function MeditationSessionForm(){
         <div className="new-entry-form">
             <form onSubmit={formik.handleSubmit}>
                 <h3>Add A Session</h3>
+                {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
                 <h4>Select a Meditation</h4>
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange} onBlur={formik.handleBlur}>
                     <option value="" disabled>Select a meditation</option>
@@ -93,7 +94,7 @@ function MeditationSessionForm(){
 
                 <h4>Note</h4>
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
-                {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
+
                 <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Add Session</button>
             </form>
         </div>

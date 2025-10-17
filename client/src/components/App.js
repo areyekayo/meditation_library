@@ -5,12 +5,15 @@ import { UserContext } from "../context/UserContext";
 
 function App() {
 
-    const {user} = useContext(UserContext)
+    const {user, isLoading} = useContext(UserContext)
     
     const location = useLocation();
 
+    if (isLoading){
+      return null; // avoids redirecting users to /meditate when refreshing the page
+    }
+
     if (!user && location.pathname !== "/login") return <Navigate to='/login' />
-    if (user && (location.pathname === "/login" || location.pathname === "/")) return <Navigate to='/meditate' />
 
     return (
         <div className="App">

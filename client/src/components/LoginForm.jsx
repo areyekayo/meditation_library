@@ -31,7 +31,7 @@ function LoginForm() {
           const user = await res.json();
           setBackendErrors({});
           onLogin({id: user.id, username: user.username});
-          onSessionRefresh()
+          onSessionRefresh();
         } else { //get back end errors if username not found or password is invalid
             const errorData = await res.json();
             if (errorData.errors?.login) {

@@ -5,6 +5,7 @@ const UserContext = React.createContext();
 function UserProvider({children}) {
     const [user, setUser] = useState(null);
     const [userMeditations, setUserMeditations] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const checkSession = () => {
         fetch("/check_session").then((r) => {
@@ -12,10 +13,12 @@ function UserProvider({children}) {
                 r.json().then((user) => {
                     setUser({id: user.id, username: user.username});
                     setUserMeditations(user.meditations);
+                    setIsLoading(false);
                 })
             } else {
                 setUser(null);
                 setUserMeditations([]);
+                setIsLoading(false);
             }
         })
     };
@@ -28,7 +31,7 @@ function UserProvider({children}) {
         checkSession();
     }
 
-    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh }}>{children}</UserContext.Provider>
+    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh, isLoading }}>{children}</UserContext.Provider>
 }
 
 export {UserContext, UserProvider};
