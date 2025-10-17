@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useOutletContext } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 function LoginForm() {
-  const { onLogin, onSessionRefresh } = useOutletContext();
+  const {onLogin, onSessionRefresh} = useContext(UserContext);
   const [backendErrors, setBackendErrors] = useState({});
 
   const formSchema = yup.object().shape({

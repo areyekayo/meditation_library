@@ -1,16 +1,19 @@
-import { useOutletContext, useParams } from "react-router-dom"
-import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
+import { useState, useEffect, useContext } from "react";
 import UserMeditationSessionCard from "./UserMeditationSessionCard";
+import { UserContext } from "../context/UserContext";
+import { MeditationContext } from "../context/MeditationContext";
 
 function MeditationCard(){
-    const {user, meditations, userMeditations, onSessionRefresh} = useOutletContext();
+    const {user, userMeditations, onSessionRefresh} = useContext(UserContext);
+    const {meditations} = useContext(MeditationContext);
     const [sessions, setSessions] = useState([]);
     const {id} = useParams();
     const medId = parseInt(id, 10);
     
-    const meditation = meditations.find((m) => m.id === medId)
+    const meditation = meditations.find((m) => m.id === medId);
 
-    const userMeditation = userMeditations.find((m) => m.id === medId)
+    const userMeditation = userMeditations.find((m) => m.id === medId)/
 
     useEffect(() => {
         if (userMeditation){setSessions(userMeditation.meditation_sessions)}
@@ -26,7 +29,7 @@ function MeditationCard(){
         }).then((r) => {
             if (r.ok){
                 setSessions((sessions) => sessions.filter((session) => session.id !== sessionId));
-                onSessionRefresh()
+                onSessionRefresh();
             }
         })
     }
@@ -41,7 +44,7 @@ function MeditationCard(){
 
         </div>
 
-            <h3>Sessions</h3>
+            <h3>Your Sessions</h3>
             <div className="sessions">
             {user && sessions.length > 0 ? ( 
                 sessions.map((session) => (

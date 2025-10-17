@@ -1,11 +1,13 @@
-import { useOutletContext } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { UserContext } from "../context/UserContext";
+import { MeditationContext } from "../context/MeditationContext";
 
 function MeditationSessionForm(){
 
-    const {meditations, onSessionRefresh} = useOutletContext();
+    const {onSessionRefresh} = useContext(UserContext);
+    const {meditations} = useContext(MeditationContext);
     const [successMessage, setSuccessMessage] = useState("");
 
     const formSchema = yup.object().shape({

@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useOutletContext } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
 
 function SignupForm() {
-    const {onLogin, onSessionRefresh} = useOutletContext()
+    const {onLogin, onSessionRefresh} = useContext(UserContext)
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username"),

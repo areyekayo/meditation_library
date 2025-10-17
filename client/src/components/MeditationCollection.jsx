@@ -1,7 +1,10 @@
-import { useOutletContext, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
 import MeditationForm from "./MeditationForm";
+import { MeditationContext } from "../context/MeditationContext";
+
 function MeditationCollection() {
-    const {meditations} = useOutletContext();
+    const {meditations} = useContext(MeditationContext);
 
     return(
         <>
