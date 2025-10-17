@@ -13,7 +13,7 @@ function MeditationCard(){
     
     const meditation = meditations.find((m) => m.id === medId);
 
-    const userMeditation = userMeditations.find((m) => m.id === medId)/
+    const userMeditation = userMeditations?.find((m) => m.id === medId);
 
     useEffect(() => {
         if (userMeditation){setSessions(userMeditation.meditation_sessions)}
