@@ -5,7 +5,6 @@ import { UserContext } from "../context/UserContext";
 function UserMeditationsList(){
     const {userMeditations} = useContext(UserContext);    
 
-
     return (
         <section className="list">
             <h3>Your Meditations</h3>

@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
 function SignupForm() {
-    const {onLogin, onSessionRefresh} = useContext(UserContext)
+    const {onLogin, onSessionRefresh} = useContext(UserContext);
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username"),

@@ -6,15 +6,15 @@ import { UserContext } from "../context/UserContext";
 
 function UserMeditationSessionCard({id, session_timestamp, completed_duration, rating, session_note, onDeleteClick}) {
 
-    const [showUpdateForm, setShowUpdateForm] = useState(false)
-    const {onSessionRefresh} = useContext(UserContext)
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const {onSessionRefresh} = useContext(UserContext);
     const [successMessage, setSuccessMessage] = useState("");
 
     const formSchema = yup.object().shape({
         completed_duration: yup.number().required("Enter your session time in minutes"),
         rating: yup.number().required("Rate your session"),
         session_note: yup.string()
-    })
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -62,6 +62,7 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
             <button onClick={() => onDeleteClick(id)}>Delete</button>
             <br />
             <button className="button" onClick={() => setShowUpdateForm(!showUpdateForm)}>Edit</button> 
+            {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
             {showUpdateForm ? (
                 <div>
                     <form onSubmit={formik.handleSubmit}>
@@ -88,9 +89,6 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
                         <h4>Update note</h4>
                         <br />
                         <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
-
-                        <br />
-                        {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
                         <br />
                         <button type="submit">Submit</button>
                             

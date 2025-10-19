@@ -23,6 +23,7 @@ function UserProvider({children}) {
         })
     };
 
+    // initial check session to load user and their meditations
     useEffect(() => {
         checkSession();
     }, []);

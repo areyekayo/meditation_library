@@ -8,6 +8,7 @@ function MeditationCard(){
     const {user, userMeditations, onSessionRefresh} = useContext(UserContext);
     const {meditations} = useContext(MeditationContext);
     const [sessions, setSessions] = useState([]);
+    const [deleteMessage, setDeleteMessage] = useState("");
     const {id} = useParams();
     const medId = parseInt(id, 10);
     
@@ -29,6 +30,8 @@ function MeditationCard(){
         }).then((r) => {
             if (r.ok){
                 setSessions((sessions) => sessions.filter((session) => session.id !== sessionId));
+                setDeleteMessage("Session deleted successfully")
+                setTimeout(() => setDeleteMessage(""), 5000);
                 onSessionRefresh();
             }
         })
@@ -46,6 +49,7 @@ function MeditationCard(){
 
             <h3>Your Sessions</h3>
             <div className="sessions">
+            {deleteMessage && <p style={{color: "green"}}>{deleteMessage}</p>}
             {user && sessions.length > 0 ? ( 
                 sessions.map((session) => (
                     <UserMeditationSessionCard
@@ -59,7 +63,7 @@ function MeditationCard(){
                         meditation={meditation} />
                     ))
             ) : (
-                <p>No sessions logged</p> //to do: add button to add session?
+                <p>No sessions logged</p>
             ) 
         }
             </div>

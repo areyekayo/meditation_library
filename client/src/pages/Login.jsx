@@ -11,11 +11,11 @@ function Login(){
     const location = useLocation();
 
     useEffect(() => {
+        // redirect to /meditate page once user logs in
         if (user && location.pathname === "/login") {
             navigate("/meditate", {replace: true});
-            console.log("redirect to /meditate from login page")
         }
-    }, [user, navigate, location.pathname])
+    }, [user, navigate, location.pathname]);
 
     return (
         <div>

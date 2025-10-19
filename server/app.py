@@ -40,7 +40,7 @@ class Meditations(Resource):
             return {'errors': [str(e)]}, 400
 
 class CheckSession(Resource):
-    # Sets user_id and gets user's meditations and nested meditation sessions
+    # Sets user_id for auto-login and gets user's meditations and nested meditation sessions
     def get(self):
         user_id = session.get('user_id')
         if user_id:
