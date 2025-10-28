@@ -61,9 +61,23 @@ function UserProvider({children}) {
         }
         })
         
-    }
+    };
 
-    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh, onAddMeditationSession, isLoading }}>{children}</UserContext.Provider>
+    const onUpdateMeditationSession = (updatedSession) => {
+        setUserMeditations((prevMeditations) => {
+            return prevMeditations.map(med => {
+                if (med.id === updatedSession.meditation_id){
+                    return {
+                        ...med,
+                        meditation_sessions: med.meditation_sessions.map(sess => sess.id === updatedSession.id ? updatedSession : sess)
+                    }
+                }
+                return med
+            })
+        })
+    };
+
+    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh, onAddMeditationSession, onUpdateMeditationSession, isLoading }}>{children}</UserContext.Provider>
 }
 
 export {UserContext, UserProvider};

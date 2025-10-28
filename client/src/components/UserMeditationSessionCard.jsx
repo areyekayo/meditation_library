@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 function UserMeditationSessionCard({id, session_timestamp, completed_duration, rating, session_note, onDeleteClick}) {
 
     const [showUpdateForm, setShowUpdateForm] = useState(false);
-    const {onSessionRefresh} = useContext(UserContext);
+    const {onSessionRefresh, onUpdateMeditationSession} = useContext(UserContext);
     const [successMessage, setSuccessMessage] = useState("");
 
     const formSchema = yup.object().shape({
@@ -37,8 +37,8 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
                     body: JSON.stringify(session)
                 }).then((res) => {
                     if (res.ok) {
-                        res.json().then(() => {
-                            onSessionRefresh();
+                        res.json().then((updatedSession) => {
+                            onUpdateMeditationSession(updatedSession);
                             setSuccessMessage("Session updated successfully!")
                             setTimeout(() => setSuccessMessage(""), 4000);
                             setTimeout(() => setShowUpdateForm(false), 4000);
