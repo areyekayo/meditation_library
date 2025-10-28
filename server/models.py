@@ -19,9 +19,12 @@ class Meditation(db.Model, SerializerMixin):
 
     meditation_sessions = db.relationship('MeditationSession', back_populates='meditation', cascade='all, delete-orphan')
 
-    users = association_proxy('meditation_sessions', 'user', creator=lambda user_obj: MeditationSession(user=user_obj))
+    users = association_proxy('meditation_sessions', 'user', creator=lambda user_obj: MeditationSession(user=user_obj)) 
 
     serialize_rules = ('-users.meditations', '-meditation_sessions.meditation', '-meditation_sessions.user')
+
+    def __repr__(self):
+        return f"<Meditation title: '{self.title}', id: {self.id}, type: {self.type}, duration: {self.duration}>"
 
 
     @validates('title')
@@ -55,6 +58,9 @@ class User(db.Model, SerializerMixin):
 
     serialize_rules = ('-meditations.users', '-meditation_sessions.user')
 
+    def __repr__(self):
+        return f"<User '{self.username}', id: {self.id}>"
+
     @hybrid_property
     def password_hash(self):
         raise Exception('Password hashes may not be viewed')
@@ -86,6 +92,9 @@ class MeditationSession(db.Model, SerializerMixin):
     meditation = db.relationship('Meditation', back_populates='meditation_sessions')
 
     serialize_rules = ('-meditation.meditation_sessions', '-user.meditation_sessions')
+
+    def __repr__(self):
+        return f"<MeditationSession id: {self.id}, rating: {self.rating}, timestamp: {self.session_timestamp}, note: '{self.session_note}', meditation_id: {self.meditation_id}, user_id: {self.user_id}>"
 
     @validates('rating')
     def validate_rating(self, key, rating):
