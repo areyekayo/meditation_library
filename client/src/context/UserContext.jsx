@@ -60,7 +60,6 @@ function UserProvider({children}) {
             }
         }
         })
-        
     };
 
     const onUpdateMeditationSession = (updatedSession) => {
@@ -77,7 +76,26 @@ function UserProvider({children}) {
         })
     };
 
-    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh, onAddMeditationSession, onUpdateMeditationSession, isLoading }}>{children}</UserContext.Provider>
+    const onDeleteMeditationSession = (sessionId, meditationId) => {
+        setUserMeditations((prevMeditations) => {
+            return prevMeditations.reduce((acc, meditation) => {
+                if (meditation.id === meditationId) {
+                    // filter out deleted session
+                    const updatedSessions = meditation.meditation_sessions.filter(session => session.id !== sessionId);
+
+                    // only keep meditation if it still has sessions
+                    if (updatedSessions.length > 0) {
+                        acc.push({...meditation, meditation_sessions: updatedSessions});
+                    }
+                }
+                // keep unrelated meditations
+                else { acc.push(meditation); }
+                return acc;
+            }, []);
+        });
+    };
+
+    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh, onAddMeditationSession, onUpdateMeditationSession, onDeleteMeditationSession, isLoading }}>{children}</UserContext.Provider>
 }
 
 export {UserContext, UserProvider};

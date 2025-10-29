@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import { MeditationContext } from "../context/MeditationContext";
 
 function MeditationCard(){
-    const {user, userMeditations, onSessionRefresh} = useContext(UserContext);
+    const {user, userMeditations, onSessionRefresh, onDeleteMeditationSession} = useContext(UserContext);
     const {meditations} = useContext(MeditationContext);
     const [sessions, setSessions] = useState([]);
     const [deleteMessage, setDeleteMessage] = useState("");
@@ -32,7 +32,7 @@ function MeditationCard(){
                 setSessions((sessions) => sessions.filter((session) => session.id !== sessionId));
                 setDeleteMessage("Session deleted successfully")
                 setTimeout(() => setDeleteMessage(""), 5000);
-                onSessionRefresh();
+                onDeleteMeditationSession(sessionId, medId)
             }
         })
     }
