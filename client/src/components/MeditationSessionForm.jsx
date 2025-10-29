@@ -101,7 +101,7 @@ function MeditationSessionForm(){
                 <h4>Note</h4>
                 <textarea placeholder="Write a note about your meditation session." name="session_note" onChange={formik.handleChange} value={formik.values.session_note}/>
 
-                <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Add Session</button>
+                <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Submit Session</button>
             </form>
         </div>
     )
