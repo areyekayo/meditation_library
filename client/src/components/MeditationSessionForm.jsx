@@ -6,7 +6,7 @@ import { MeditationContext } from "../context/MeditationContext";
 
 function MeditationSessionForm(){
 
-    const {onSessionRefresh, onAddMeditationSession} = useContext(UserContext);
+    const {onAddMeditationSession} = useContext(UserContext);
     const {meditations} = useContext(MeditationContext);
     const [successMessage, setSuccessMessage] = useState("");
 
@@ -41,7 +41,6 @@ function MeditationSessionForm(){
                 }).then((res) => {
                     if (res.ok) {
                         res.json().then((session) => {
-                            //onSessionRefresh();
                             onAddMeditationSession(session)
                             resetForm();
                             setSuccessMessage("Meditation session created successfully!");

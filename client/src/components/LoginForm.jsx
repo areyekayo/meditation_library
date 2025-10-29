@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { UserContext } from "../context/UserContext";
 
 function LoginForm() {
-  const {onLogin, onSessionRefresh} = useContext(UserContext);
+  const {onLogin} = useContext(UserContext);
   const [backendErrors, setBackendErrors] = useState({});
 
   const formSchema = yup.object().shape({
@@ -30,8 +30,7 @@ function LoginForm() {
         if (res.ok) {
           const user = await res.json();
           setBackendErrors({});
-          onLogin({id: user.id, username: user.username});
-          onSessionRefresh();
+          onLogin(user);
         } else { //get back end errors if username not found or password is invalid
             const errorData = await res.json();
             if (errorData.errors?.login) {

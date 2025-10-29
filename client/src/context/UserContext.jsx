@@ -9,7 +9,7 @@ function UserProvider({children}) {
     const [isLoading, setIsLoading] = useState(true);
     const {meditations} = useContext(MeditationContext);
 
-    const checkSession = () => {
+    const onLogin = () => {
         fetch("/check_session").then((r) => {
             if (r.ok){
                 r.json().then((user) => {
@@ -23,16 +23,30 @@ function UserProvider({children}) {
                 setIsLoading(false);
             }
         })
-    };
+    }
 
-    // initial check session to load user and their meditations
+    const onLogout = () => {
+        setUser(null);
+        setUserMeditations([]);
+    }
+
+    // auto-login for page refreshes
     useEffect(() => {
-        checkSession();
+         fetch("/check_session").then((r) => {
+            if (r.ok){
+                r.json().then((user) => {
+                    setUser({id: user.id, username: user.username});
+                    setUserMeditations(user.meditations);
+                    setIsLoading(false);
+                })
+            } else {
+                setUser(null);
+                setUserMeditations([]);
+                setIsLoading(false);
+            }
+        })
     }, []);
 
-    const onSessionRefresh = () => {
-        checkSession(); // 
-    }
 
     const onAddMeditationSession = (session) => {
         // get the session's meditation
@@ -95,7 +109,7 @@ function UserProvider({children}) {
         });
     };
 
-    return <UserContext.Provider value={{user, onLogin: setUser, userMeditations, onSessionRefresh, onAddMeditationSession, onUpdateMeditationSession, onDeleteMeditationSession, isLoading }}>{children}</UserContext.Provider>
+    return <UserContext.Provider value={{user, onLogin, onLogout,  userMeditations, setUserMeditations, onAddMeditationSession, onUpdateMeditationSession, onDeleteMeditationSession, isLoading }}>{children}</UserContext.Provider>
 }
 
 export {UserContext, UserProvider};

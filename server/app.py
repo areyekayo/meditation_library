@@ -135,7 +135,7 @@ class MeditationSessions(Resource):
             db.session.commit()
 
             meditation_session_dict = meditation_session.to_dict(only=(
-                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id', 'meditation', 'user'
+                'id', 'completed_duration', 'rating', 'session_note', 'session_timestamp', 'user_id', 'meditation_id'
             ))
             return meditation_session_dict, 201
         except Exception as e:

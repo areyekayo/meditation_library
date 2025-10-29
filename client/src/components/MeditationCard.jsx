@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import { MeditationContext } from "../context/MeditationContext";
 
 function MeditationCard(){
-    const {user, userMeditations, onSessionRefresh, onDeleteMeditationSession} = useContext(UserContext);
+    const {user, userMeditations, onDeleteMeditationSession} = useContext(UserContext);
     const {meditations} = useContext(MeditationContext);
     const [sessions, setSessions] = useState([]);
     const [deleteMessage, setDeleteMessage] = useState("");

@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
 function SignupForm() {
-    const {onLogin, onSessionRefresh} = useContext(UserContext);
+    const {onLogin} = useContext(UserContext);
 
     const formSchema = yup.object().shape({
         username: yup.string().required("Must enter username"),
@@ -26,7 +26,6 @@ function SignupForm() {
                 if (res.status === 201) {
                     res.json().then(newUser => {
                         onLogin(newUser);
-                        onSessionRefresh();
                     })
                 } else if (res.status === 422) {
                     res.json().then(errorData => {

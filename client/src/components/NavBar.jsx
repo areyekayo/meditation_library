@@ -4,14 +4,14 @@ import { useContext } from "react";
 
 function NavBar() {
     const navigate = useNavigate()
-    const {user, onLogin} = useContext(UserContext)
+    const {user, onLogout} = useContext(UserContext)
 
     const handleLogOut = () => {
         fetch('/logout', 
             {method: "DELETE"})
             .then((r) => {
                 if (r.ok) {
-                    onLogin(null);
+                    onLogout();
                     navigate('/login')
                 };
             });
