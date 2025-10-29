@@ -73,12 +73,28 @@ class Login(Resource):
 
         user = User.query.filter(User.username == username).first()
 
+        sessions = MeditationSession.query.filter(MeditationSession.user_id == user.id).all()
+
+        med_dict = {}
+        user_dict = {}
+
+        for s in sessions:
+            med_id = s.meditation.id
+            if med_id not in med_dict:
+                med_dict[med_id] = s.meditation.to_dict()
+                med_dict[med_id]['meditation_sessions'] = []
+            med_dict[med_id]['meditation_sessions'].append(s.to_dict(only=('id', 'rating', 'session_timestamp', 'completed_duration', 'session_note', 'meditation_id', 'user_id')))
+
+            meditations = list(med_dict.values())
+            user_dict = user.to_dict(only=('id', 'username'))
+            user_dict['meditations'] = meditations
+
         if not user or not user.authenticate(password):
             return {'errors': {'login': ['Invalid username or password']}}, 401
         
         if user.authenticate(password):
             session['user_id'] = user.id
-            return user.to_dict(only=('id', 'username')), 200
+            return user_dict, 200
 
     
 class Logout(Resource):

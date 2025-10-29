@@ -5,29 +5,19 @@ const UserContext = React.createContext();
 
 function UserProvider({children}) {
     const [user, setUser] = useState(null);
-    const [userMeditations, setUserMeditations] = useState([]);
+    const [userMeditations, setUserMeditations] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const {meditations} = useContext(MeditationContext);
 
-    const onLogin = () => {
-        fetch("/check_session").then((r) => {
-            if (r.ok){
-                r.json().then((user) => {
-                    setUser({id: user.id, username: user.username});
-                    setUserMeditations(user.meditations);
-                    setIsLoading(false);
-                })
-            } else {
-                setUser(null);
-                setUserMeditations([]);
-                setIsLoading(false);
-            }
-        })
+    const onLogin = (user) => {
+        setUser({id: user.id, username: user.username});
+        setUserMeditations(user.meditations);
+        setIsLoading(false);
     }
 
     const onLogout = () => {
         setUser(null);
-        setUserMeditations([]);
+        setUserMeditations(null);
     }
 
     // auto-login for page refreshes
