@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { UserContext } from "../context/UserContext";
@@ -7,8 +7,15 @@ import { MeditationContext } from "../context/MeditationContext";
 function MeditationSessionForm(){
 
     const {onAddMeditationSession} = useContext(UserContext);
-    const {meditations} = useContext(MeditationContext);
+    const {meditations, setMeditations} = useContext(MeditationContext);
     const [successMessage, setSuccessMessage] = useState("");
+
+    // refresh meditations to get any new meditations created by other users
+    useEffect(() => {
+        fetch("/meditations")
+        .then((r) => r.json())
+        .then(setMeditations)
+    }, []);
 
     const formSchema = yup.object().shape({
         meditation: yup.string().required("Meditation is required"),
@@ -58,7 +65,6 @@ function MeditationSessionForm(){
     return (
         <div className="new-entry-form">
             <form onSubmit={formik.handleSubmit}>
-                <h3>Add A Session</h3>
                 {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
                 <h4>Select a Meditation</h4>
                 <select name="meditation" value={formik.values.meditation} onChange={formik.handleChange} onBlur={formik.handleBlur}>

@@ -61,7 +61,7 @@ function UserMeditationSessionCard({id, session_timestamp, completed_duration, r
             <p>Note: {session_note}</p>
             <button onClick={() => onDeleteClick(id)}>Delete</button>
             <br />
-            <button className="button" onClick={() => setShowUpdateForm(!showUpdateForm)}>Edit</button> 
+            <button onClick={() => setShowUpdateForm(!showUpdateForm)}>Edit</button> 
             {successMessage && <p style={{color: "green"}}>{successMessage}</p>}
             {showUpdateForm ? (
                 <div>

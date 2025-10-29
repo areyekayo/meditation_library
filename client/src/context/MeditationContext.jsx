@@ -16,7 +16,7 @@ function MeditationProvider({children}) {
     };
 
     return (
-        <MeditationContext.Provider value={{meditations, onAddMeditation}}>
+        <MeditationContext.Provider value={{meditations, setMeditations, onAddMeditation}}>
             {children}
         </MeditationContext.Provider>
     )

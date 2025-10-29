@@ -1,7 +1,9 @@
 import MeditationSessionForm from "../components/MeditationSessionForm";
 import UserMeditationsList from "../components/UserMeditationsList";
+import { useState } from "react";
 
 function Meditate(){
+    const [showSessionForm, setShowSessionForm] = useState(false);
 
     return (
         <>
@@ -9,7 +11,15 @@ function Meditate(){
                 <UserMeditationsList />
             </div>
             <div>
-                <MeditationSessionForm />
+            <div className="centered-button">
+                <button className="button" onClick={() => setShowSessionForm(!showSessionForm)}>Add A Session</button> 
+            </div>
+
+                {showSessionForm ? 
+                    (<MeditationSessionForm />) 
+                    : 
+                    (<></>)}
+                
             </div>
         </>
 

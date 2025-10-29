@@ -96,3 +96,14 @@ h3 {
   display: grid;
 }
 
+.centered-button {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.button {
+  font-size: 15px;
+  font-family: 'Roboto';
+}
+
